@@ -20,10 +20,17 @@ class RandomWords extends StatefulWidget {
 class _RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
   final _biggerFontStyle = const TextStyle(fontSize: 18.0);
+  final _saved = <WordPair>{};
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Startup Name Generator')),
+        appBar: AppBar(title: const Text('Startup Name Generator'), actions: [
+          IconButton(
+            onPressed: _pushSaved,
+            icon: const Icon(Icons.list),
+            tooltip: "Saved Suggestions",
+          )
+        ]),
         body: _buildSuggestions());
   }
 
@@ -41,7 +48,35 @@ class _RandomWordsState extends State<RandomWords> {
   }
 
   Widget _buildRow(WordPair wordPair) {
+    final alreadySaved = _saved.contains(wordPair);
     return ListTile(
-        title: Text(wordPair.asPascalCase, style: _biggerFontStyle));
+        title: Text(wordPair.asPascalCase, style: _biggerFontStyle),
+        trailing: Icon(alreadySaved ? Icons.favorite : Icons.favorite_border,
+            color: alreadySaved ? Colors.red : null,
+            semanticLabel: alreadySaved ? "Remove from saved" : "save"),
+        onTap: () {
+          setState(() {
+            if (alreadySaved) {
+              _saved.remove(wordPair);
+            } else {
+              _saved.add(wordPair);
+            }
+          });
+        });
+  }
+
+  void _pushSaved() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      final tiles = _saved.map((pair) =>
+          ListTile(title: Text(pair.asPascalCase, style: _biggerFontStyle)));
+      final divided = tiles.isNotEmpty
+          ? ListTile.divideTiles(tiles: tiles, context: context).toList()
+          : <Widget>[];
+      return Scaffold(
+          appBar: AppBar(
+            title: const Text("Saved Suggestions"),
+          ),
+          body: ListView(children: divided));
+    }));
   }
 }
