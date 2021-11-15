@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "32621067800",
+    "project_id": "ez-eats-d5a72",
+    "storage_bucket": "ez-eats-d5a72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32621067800:android:57fa642cd5bd20a9eecd6d",
+        "android_client_info": {
+          "package_name": "com.example.ez_eats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32621067800-ng6fdq3ol33o8fvkvv8i51loantu3ldv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbOPjc6GRpBNaRY11tuVDzSPWbxJ7_Vu4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32621067800-ng6fdq3ol33o8fvkvv8i51loantu3ldv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
