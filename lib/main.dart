@@ -5,16 +5,36 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+FirebaseFirestore firestore = FirebaseFirestore.instance;
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  _MyAppState createState() => _MyAppState();
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        title: "Firebase Demo",
+        theme: ThemeData(
+            appBarTheme: AppBarTheme(
+                backgroundColor: Colors.blue[200],
+                foregroundColor: Colors.white)),
+        home: const AppBody());
+  }
 }
 
-class _MyAppState extends State<MyApp> {
+class AppBody extends StatefulWidget {
+  const AppBody({Key? key}) : super(key: key);
+
+  @override
+  _AppBodyState createState() => _AppBodyState();
+}
+
+class _AppBodyState extends State<AppBody> {
   // Define an async function to initialize FlutterFire
   void initializeFlutterFire() async {
     try {
@@ -34,9 +54,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-      title: const Text("Firebase Demo"),
-    ));
+        appBar: AppBar(title: const Text("Firebase Demo")),
+        body: const Align(
+            alignment: Alignment.center,
+            child: Text("text", style: TextStyle(fontSize: 24.0))));
   }
 }
 
