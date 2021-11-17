@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-FirebaseFirestore firestore = FirebaseFirestore.instance;
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
@@ -21,7 +19,7 @@ class MyApp extends StatelessWidget {
         title: "Firebase Demo",
         theme: ThemeData(
             appBarTheme: AppBarTheme(
-                backgroundColor: Colors.blue[200],
+                backgroundColor: Colors.blue[300],
                 foregroundColor: Colors.white)),
         home: const AppBody());
   }
@@ -35,6 +33,9 @@ class AppBody extends StatefulWidget {
 }
 
 class _AppBodyState extends State<AppBody> {
+  CollectionReference restaurants =
+      FirebaseFirestore.instance.collection('restaurants');
+
   // Define an async function to initialize FlutterFire
   void initializeFlutterFire() async {
     try {
@@ -53,11 +54,53 @@ class _AppBodyState extends State<AppBody> {
 
   @override
   Widget build(BuildContext context) {
+    final textWidget = FutureBuilder<DocumentSnapshot>(
+        future: restaurants.doc("McDonald's").get(),
+        builder: (context, snapshot) {
+          try {
+            if (snapshot.hasData) {
+              final data = snapshot.data!.data() as Map<String, dynamic>;
+              return Text("Snapshot Data: ${data['menu'][1].entries}");
+            } else if (snapshot.hasError) {
+              return Text("Snapshot Error: ${snapshot.error}");
+            } else {
+              return const Text("???");
+            }
+          } catch (e) {
+            return Text("Error: $e");
+          }
+        });
+
     return Scaffold(
-        appBar: AppBar(title: const Text("Firebase Demo")),
-        body: const Align(
-            alignment: Alignment.center,
-            child: Text("text", style: TextStyle(fontSize: 24.0))));
+        appBar: AppBar(
+            title: const Align(
+                alignment: Alignment.centerLeft, child: Text("Firebase Demo"))),
+        body: Align(alignment: Alignment.center, child: _restaurantList()));
+  }
+
+  Widget _restaurantList() {
+    return FutureBuilder<QuerySnapshot>(
+        future: restaurants.get(),
+        builder: (context, snapshot) {
+          final names = snapshot.data!.docs.map((doc) => doc["name"]).toList();
+          final allData = snapshot.data!.docs.map((doc) => doc.data()).toList();
+          return ListView.builder(
+              shrinkWrap: false,
+              itemCount: 100,
+              itemBuilder: (context, i) {
+                try {
+                  return ListTile(
+                      title: Text(names[i],
+                          style: const TextStyle(
+                            fontSize: 24.0,
+                          )),
+                      onTap: () => log("click"));
+                } catch (e) {
+                  // log(e.toString());
+                  return const SizedBox.shrink();
+                }
+              });
+        });
   }
 }
 
