@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() {
+// CollectionReference restaurants =
+//     FirebaseFirestore.instance.collection("restaurants");
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -33,43 +37,45 @@ class AppBody extends StatefulWidget {
 }
 
 class _AppBodyState extends State<AppBody> {
-  CollectionReference restaurants =
-      FirebaseFirestore.instance.collection('restaurants');
-
   // Define an async function to initialize FlutterFire
-  void initializeFlutterFire() async {
-    try {
-      // Wait for Firebase to initialize
-      await Firebase.initializeApp();
-    } catch (e) {
-      log(e.toString());
-    }
-  }
+  // void initializeFlutterFire() async {
+  //   // try {
+  //   //   // Wait for Firebase to initialize
+  //   //   await Firebase.initializeApp();
+  //   // } catch (e) {
+  //   //   log(e.toString());
+  //   // }
+  //   await Firebase.initializeApp();
+  // }
 
   @override
   void initState() {
-    initializeFlutterFire();
+    // initializeFlutterFire();
+    Firebase.initializeApp();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final textWidget = FutureBuilder<DocumentSnapshot>(
-        future: restaurants.doc("McDonald's").get(),
-        builder: (context, snapshot) {
-          try {
-            if (snapshot.hasData) {
-              final data = snapshot.data!.data() as Map<String, dynamic>;
-              return Text("Snapshot Data: ${data['menu'][1].entries}");
-            } else if (snapshot.hasError) {
-              return Text("Snapshot Error: ${snapshot.error}");
-            } else {
-              return const Text("???");
-            }
-          } catch (e) {
-            return Text("Error: $e");
-          }
-        });
+    // final _textWidget = FutureBuilder<DocumentSnapshot>(
+    //     future: FirebaseFirestore.instance
+    //         .collection('restaurants')
+    //         .doc("McDonald's")
+    //         .get(),
+    //     builder: (context, snapshot) {
+    //       try {
+    //         if (snapshot.hasData) {
+    //           final data = snapshot.data!.data() as Map<String, dynamic>;
+    //           return Text("Snapshot Data: ${data['menu'][1].entries}");
+    //         } else if (snapshot.hasError) {
+    //           return Text("Snapshot Error: ${snapshot.error}");
+    //         } else {
+    //           return const Text("???");
+    //         }
+    //       } catch (e) {
+    //         return Text("Error: $e");
+    //       }
+    //     });
 
     return Scaffold(
         appBar: AppBar(
@@ -80,7 +86,7 @@ class _AppBodyState extends State<AppBody> {
 
   Widget _restaurantList() {
     return FutureBuilder<QuerySnapshot>(
-        future: restaurants.get(),
+        future: FirebaseFirestore.instance.collection('restaurants').get(),
         builder: (context, snapshot) {
           final names = snapshot.data!.docs.map((doc) => doc["name"]).toList();
           final allData = snapshot.data!.docs.map((doc) => doc.data()).toList();
@@ -91,10 +97,11 @@ class _AppBodyState extends State<AppBody> {
                 try {
                   return ListTile(
                       title: Text(names[i],
-                          style: const TextStyle(
-                            fontSize: 24.0,
-                          )),
-                      onTap: () => log("click"));
+                          style: const TextStyle(fontSize: 24.0)));
+                  // onTap: () => Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => const MenuRoute())));
                 } catch (e) {
                   // log(e.toString());
                   return const SizedBox.shrink();
@@ -104,7 +111,19 @@ class _AppBodyState extends State<AppBody> {
   }
 }
 
+// class MenuRoute extends StatelessWidget {
+//   const MenuRoute({Key? key}) : super(key: key);
 
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         appBar: AppBar(title: const Text("Menu")), body: _menuList());
+//   }
+
+//   Widget _menuList() {
+//     return FutureBuilder<>(builder: builder)
+//   }
+// }
 
 // class MyApp extends StatelessWidget {
 //   @override
