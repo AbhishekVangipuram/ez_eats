@@ -1,0 +1,30 @@
+{
+    "restaurants": [
+        {
+            "name": "McDonald's",
+            "menu": [
+                {
+                    "nuggets": [
+                        "apps",
+                        0
+                    ]
+                },
+                {
+                    "big mac": []
+                }
+            ],
+            "dividers": [
+                {
+                    "apps": 0
+                },
+                {
+                    "jimmy": 15
+                }
+            ]
+        },
+        {
+            "name": "Panera Bread",
+            "menu": "cum"
+        }
+    ]
+}
