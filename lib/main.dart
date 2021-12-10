@@ -8,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // CollectionReference restaurants =
 //     FirebaseFirestore.instance.collection("restaurants");
 
-void main() async {
+void main() async { 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
