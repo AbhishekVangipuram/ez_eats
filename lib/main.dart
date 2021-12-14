@@ -6,17 +6,8 @@ import 'package:flutter/services.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() {
-  // final jsonEncoder = JsonEncoder();
-  // print(jsonEncoder.convert('users.json'));
-  readJson();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
-}
-
-Future<void> readJson() async {
-    final String response = await rootBundle.loadString('assets/sample.json');
-    final data = await json.decode(response);
-    print(data['name']);
 }
 
 class MyApp extends StatelessWidget {
@@ -47,6 +38,16 @@ class _AppBodyState extends State<AppBody> {
     super.initState();
   }
 
+  var _text = "";
+  Future<void> readJson() async {
+    final String response = await rootBundle.loadString('data/users.json');
+    final data = await json.decode(response);
+
+    setState(() {
+      _text = "name: ${data['name']} value: ${data['value']}";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // final _textWidget = FutureBuilder<DocumentSnapshot>(
@@ -68,12 +69,12 @@ class _AppBodyState extends State<AppBody> {
     //         return Text("Error: $e");
     //       }
     //     });
-
+    readJson();
     return Scaffold(
         appBar: AppBar(
             title: const Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Firebase Demo"))));
+                alignment: Alignment.centerLeft, child: Text("JSON Demo"))),
+        body: Text(_text));
     // body: Align(alignment: Alignment.center, child: _restaurantList()));
   }
 }
