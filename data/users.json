@@ -1,8 +1,5 @@
 {
-    "users": [
-        {
-            "name": "",
-            "restrictions": []
-        }
-    ]
+
+    "name": "Jimmy",
+    "value": 17
 }

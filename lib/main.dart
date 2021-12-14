@@ -1,17 +1,22 @@
-// import 'package:english_words/english_words.dart';
 import 'dart:developer';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 
-// CollectionReference restaurants =
-//     FirebaseFirestore.instance.collection("restaurants");
-
-void main() async { 
+void main() {
+  // final jsonEncoder = JsonEncoder();
+  // print(jsonEncoder.convert('users.json'));
+  readJson();
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   runApp(const MyApp());
+}
+
+Future<void> readJson() async {
+    final String response = await rootBundle.loadString('assets/sample.json');
+    final data = await json.decode(response);
+    print(data['name']);
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "Firebase Demo",
+        title: "JSON Demo",
         theme: ThemeData(
             appBarTheme: AppBarTheme(
                 backgroundColor: Colors.blue[300],
@@ -37,21 +42,8 @@ class AppBody extends StatefulWidget {
 }
 
 class _AppBodyState extends State<AppBody> {
-  // Define an async function to initialize FlutterFire
-  // void initializeFlutterFire() async {
-  //   // try {
-  //   //   // Wait for Firebase to initialize
-  //   //   await Firebase.initializeApp();
-  //   // } catch (e) {
-  //   //   log(e.toString());
-  //   // }
-  //   await Firebase.initializeApp();
-  // }
-
   @override
   void initState() {
-    // initializeFlutterFire();
-    Firebase.initializeApp();
     super.initState();
   }
 
@@ -80,36 +72,40 @@ class _AppBodyState extends State<AppBody> {
     return Scaffold(
         appBar: AppBar(
             title: const Align(
-                alignment: Alignment.centerLeft, child: Text("Firebase Demo"))),
-        body: Align(alignment: Alignment.center, child: _restaurantList()));
-  }
-
-  Widget _restaurantList() {
-    return FutureBuilder<QuerySnapshot>(
-        future: FirebaseFirestore.instance.collection('restaurants').get(),
-        builder: (context, snapshot) {
-          final names = snapshot.data!.docs.map((doc) => doc["name"]).toList();
-          final allData = snapshot.data!.docs.map((doc) => doc.data()).toList();
-          return ListView.builder(
-              shrinkWrap: false,
-              itemCount: 100,
-              itemBuilder: (context, i) {
-                try {
-                  return ListTile(
-                      title: Text(names[i],
-                          style: const TextStyle(fontSize: 24.0)));
-                  // onTap: () => Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => const MenuRoute())));
-                } catch (e) {
-                  // log(e.toString());
-                  return const SizedBox.shrink();
-                }
-              });
-        });
+                alignment: Alignment.centerLeft,
+                child: Text("Firebase Demo"))));
+    // body: Align(alignment: Alignment.center, child: _restaurantList()));
   }
 }
+
+
+
+//   Widget _restaurantList() {
+//     return FutureBuilder<QuerySnapshot>(
+//         future: FirebaseFirestore.instance.collection('restaurants').get(),
+//         builder: (context, snapshot) {
+//           final names = snapshot.data!.docs.map((doc) => doc["name"]).toList();
+//           final allData = snapshot.data!.docs.map((doc) => doc.data()).toList();
+//           return ListView.builder(
+//               shrinkWrap: false,
+//               itemCount: 100,
+//               itemBuilder: (context, i) {
+//                 try {
+//                   return ListTile(
+//                       title: Text(names[i],
+//                           style: const TextStyle(fontSize: 24.0)));
+//                   // onTap: () => Navigator.push(
+//                   //     context,
+//                   //     MaterialPageRoute(
+//                   //         builder: (context) => const MenuRoute())));
+//                 } catch (e) {
+//                   // log(e.toString());
+//                   return const SizedBox.shrink();
+//                 }
+//               });
+//         });
+//   }
+// }
 
 // class MenuRoute extends StatelessWidget {
 //   const MenuRoute({Key? key}) : super(key: key);
