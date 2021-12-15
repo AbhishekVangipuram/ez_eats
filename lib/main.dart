@@ -1,16 +1,7 @@
-// import 'package:english_words/english_words.dart';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-// CollectionReference restaurants =
-//     FirebaseFirestore.instance.collection("restaurants");
-
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -20,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "Firebase Demo",
+        title: "Flutter App",
         theme: ThemeData(
             appBarTheme: AppBarTheme(
                 backgroundColor: Colors.blue[300],
@@ -37,24 +28,6 @@ class AppBody extends StatefulWidget {
 }
 
 class _AppBodyState extends State<AppBody> {
-  // Define an async function to initialize FlutterFire
-  // void initializeFlutterFire() async {
-  //   // try {
-  //   //   // Wait for Firebase to initialize
-  //   //   await Firebase.initializeApp();
-  //   // } catch (e) {
-  //   //   log(e.toString());
-  //   // }
-  //   await Firebase.initializeApp();
-  // }
-
-  @override
-  void initState() {
-    // initializeFlutterFire();
-    Firebase.initializeApp();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     // final _textWidget = FutureBuilder<DocumentSnapshot>(
@@ -81,34 +54,35 @@ class _AppBodyState extends State<AppBody> {
         appBar: AppBar(
             title: const Align(
                 alignment: Alignment.centerLeft, child: Text("Firebase Demo"))),
-        body: Align(alignment: Alignment.center, child: _restaurantList()));
+        body: const Align(
+            alignment: Alignment.center, child: Text("Lorem Ipsum")));
   }
 
-  Widget _restaurantList() {
-    return FutureBuilder<QuerySnapshot>(
-        future: FirebaseFirestore.instance.collection('restaurants').get(),
-        builder: (context, snapshot) {
-          final names = snapshot.data!.docs.map((doc) => doc["name"]).toList();
-          final allData = snapshot.data!.docs.map((doc) => doc.data()).toList();
-          return ListView.builder(
-              shrinkWrap: false,
-              itemCount: 100,
-              itemBuilder: (context, i) {
-                try {
-                  return ListTile(
-                      title: Text(names[i],
-                          style: const TextStyle(fontSize: 24.0)));
-                  // onTap: () => Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => const MenuRoute())));
-                } catch (e) {
-                  // log(e.toString());
-                  return const SizedBox.shrink();
-                }
-              });
-        });
-  }
+  // Widget _restaurantList() {
+  //   return FutureBuilder<QuerySnapshot>(
+  //       future: FirebaseFirestore.instance.collection('restaurants').get(),
+  //       builder: (context, snapshot) {
+  //         final names = snapshot.data!.docs.map((doc) => doc["name"]).toList();
+  //         final allData = snapshot.data!.docs.map((doc) => doc.data()).toList();
+  //         return ListView.builder(
+  //             shrinkWrap: false,
+  //             itemCount: 100,
+  //             itemBuilder: (context, i) {
+  //               try {
+  //                 return ListTile(
+  //                     title: Text(names[i],
+  //                         style: const TextStyle(fontSize: 24.0)));
+  //                 // onTap: () => Navigator.push(
+  //                 //     context,
+  //                 //     MaterialPageRoute(
+  //                 //         builder: (context) => const MenuRoute())));
+  //               } catch (e) {
+  //                 // log(e.toString());
+  //                 return const SizedBox.shrink();
+  //               }
+  //             });
+  //       });
+  // }
 }
 
 // class MenuRoute extends StatelessWidget {
