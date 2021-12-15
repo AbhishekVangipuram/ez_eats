@@ -30,74 +30,20 @@ class AppBody extends StatefulWidget {
 class _AppBodyState extends State<AppBody> {
   @override
   Widget build(BuildContext context) {
-    // final _textWidget = FutureBuilder<DocumentSnapshot>(
-    //     future: FirebaseFirestore.instance
-    //         .collection('restaurants')
-    //         .doc("McDonald's")
-    //         .get(),
-    //     builder: (context, snapshot) {
-    //       try {
-    //         if (snapshot.hasData) {
-    //           final data = snapshot.data!.data() as Map<String, dynamic>;
-    //           return Text("Snapshot Data: ${data['menu'][1].entries}");
-    //         } else if (snapshot.hasError) {
-    //           return Text("Snapshot Error: ${snapshot.error}");
-    //         } else {
-    //           return const Text("???");
-    //         }
-    //       } catch (e) {
-    //         return Text("Error: $e");
-    //       }
-    //     });
-
     return Scaffold(
         appBar: AppBar(
+            leading: null,
             title: const Align(
-                alignment: Alignment.centerLeft, child: Text("Firebase Demo"))),
+                alignment: Alignment.centerLeft, child: Text("Flutter App")),
+            actions: const [
+              IconButton(
+                  onPressed: null,
+                  icon: Icon(Icons.account_circle_outlined, color: Colors.red))
+            ]),
         body: const Align(
             alignment: Alignment.center, child: Text("Lorem Ipsum")));
   }
-
-  // Widget _restaurantList() {
-  //   return FutureBuilder<QuerySnapshot>(
-  //       future: FirebaseFirestore.instance.collection('restaurants').get(),
-  //       builder: (context, snapshot) {
-  //         final names = snapshot.data!.docs.map((doc) => doc["name"]).toList();
-  //         final allData = snapshot.data!.docs.map((doc) => doc.data()).toList();
-  //         return ListView.builder(
-  //             shrinkWrap: false,
-  //             itemCount: 100,
-  //             itemBuilder: (context, i) {
-  //               try {
-  //                 return ListTile(
-  //                     title: Text(names[i],
-  //                         style: const TextStyle(fontSize: 24.0)));
-  //                 // onTap: () => Navigator.push(
-  //                 //     context,
-  //                 //     MaterialPageRoute(
-  //                 //         builder: (context) => const MenuRoute())));
-  //               } catch (e) {
-  //                 // log(e.toString());
-  //                 return const SizedBox.shrink();
-  //               }
-  //             });
-  //       });
-  // }
 }
-
-// class MenuRoute extends StatelessWidget {
-//   const MenuRoute({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(title: const Text("Menu")), body: _menuList());
-//   }
-
-//   Widget _menuList() {
-//     return FutureBuilder<>(builder: builder)
-//   }
-// }
 
 // class MyApp extends StatelessWidget {
 //   @override
