@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
+List _users = [];
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
@@ -38,13 +40,14 @@ class _AppBodyState extends State<AppBody> {
     super.initState();
   }
 
-  var _text = "";
+  // var _text = "";
   Future<void> readJson() async {
     final String response = await rootBundle.loadString('data/users.json');
     final data = await json.decode(response);
 
     setState(() {
-      _text = "name: ${data['name']} value: ${data['value']}";
+      _users = data['users'];
+      // _text = "name: ${data['name']} value: ${data['value']}";
     });
   }
 
@@ -69,16 +72,60 @@ class _AppBodyState extends State<AppBody> {
     //         return Text("Error: $e");
     //       }
     //     });
-    readJson();
+    // readJson();
     return Scaffold(
         appBar: AppBar(
             title: const Align(
                 alignment: Alignment.centerLeft, child: Text("JSON Demo"))),
-        body: Text(_text));
+        body: _userList());
+    // body: Text(_text));
     // body: Align(alignment: Alignment.center, child: _restaurantList()));
   }
-}
 
+  Widget _userList() {
+    readJson();
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(25),
+        child: Column(
+          
+          children: [
+            // ElevatedButton(
+            //   child: const Text('Load Data'),
+            //   onPressed: readJson,
+            // ),
+
+            // Display the data loaded from sample.json
+            _users.isNotEmpty
+                ? Expanded(
+                    child: ListView.builder(
+                      itemCount: _users.length,
+                      itemBuilder: (context, index) {
+                        List _restrictions = _users[index]['restrictions'];
+                        // print(_restrictions.length.toString());
+                        var rString = '';
+                        for (var i = 0; i < _restrictions.length - 1; i++) {
+                          rString += _restrictions[i] + ", ";
+                        }
+                        if(_users.isNotEmpty) rString += _restrictions[_restrictions.length - 1];
+                        return Card(
+                          margin: const EdgeInsets.all(10),
+                          child: ListTile(
+                            leading: Text('User ' + index.toString()),
+                            title: Text(_users[index]['name']),
+                            // subtitle: Text("Restrictions: " + rString)
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                : Container()
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 
 //   Widget _restaurantList() {

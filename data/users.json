@@ -1,5 +1,8 @@
 {
-
-    "name": "Jimmy",
-    "value": 17
+    "users": [
+        {
+            "name": "",
+            "restrictions": ["peanuts", "soy"]
+        }
+    ]
 }
