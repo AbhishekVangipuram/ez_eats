@@ -102,7 +102,6 @@ class _AppBodyState extends State<AppBody> {
                       itemCount: _users.length,
                       itemBuilder: (context, index) {
                         List _restrictions = _users[index]['restrictions'];
-                        // print(_restrictions.length.toString());
                         var rString = '';
                         for (var i = 0; i < _restrictions.length - 1; i++) {
                           rString += _restrictions[i] + ", ";
@@ -111,9 +110,9 @@ class _AppBodyState extends State<AppBody> {
                         return Card(
                           margin: const EdgeInsets.all(10),
                           child: ListTile(
-                            leading: Text('User ' + index.toString()),
+                            leading: Text('User ' + (index+1).toString()),                                                                                                                                   
                             title: Text(_users[index]['name']),
-                            // subtitle: Text("Restrictions: " + rString)
+                            subtitle: Text("Restrictions: " + rString)
                           ),
                         );
                       },
