@@ -15,6 +15,10 @@
         {
             "name": "Mark",
             "restrictions": ["peanuts"]
+        },
+        {
+            "name": "Bob",
+            "restrictions": ["tree nuts", "soy", "celery"]
         }
     ]
 }
