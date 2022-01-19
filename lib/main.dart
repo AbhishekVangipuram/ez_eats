@@ -1,9 +1,10 @@
-import 'dart:developer';
+// import 'dart:developer';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ez_eats/user_screen.dart';
 
 List _users = [];
 
@@ -48,77 +49,79 @@ class _AppBodyState extends State<AppBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: null,
-          title: const Align(
-              alignment: Alignment.centerLeft, child: Text("JSON Demo")),
-          actions: const [
-            IconButton(
-              onPressed: null,
-              icon: Icon(Icons.attach_money_sharp),
-              iconSize: 40.0,
-            ),
-          ],
-        ),
-        body: _userList());
-  }
-
-  Widget _userList() {
-    readJson();
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(25),
-        child: Column(
-          children: [
-            // ElevatedButton(
-            //   child: const Text('Load Data'),
-            //   onPressed: readJson,
-            // ),
-
-            // Display the data loaded from sample.json
-            _users.isNotEmpty
-                ? Expanded(
-                    child: ListView.builder(
-                      itemCount: _users.length,
-                      itemBuilder: (context, index) {
-                        List _restrictions = _users[index]['restrictions'];
-                        var rString = '';
-                        for (var i = 0; i < _restrictions.length - 1; i++) {
-                          rString += _restrictions[i] + ", ";
-                        }
-                        if (_users.isNotEmpty) {
-                          rString += _restrictions[_restrictions.length - 1];
-                        }
-                        return Card(
-                          margin: const EdgeInsets.all(10),
-                          child: ListTile(
-                              leading: Text('User ' + (index + 1).toString()),
-                              title: Text(_users[index]['name']),
-                              subtitle: Text("Restrictions: " + rString),
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => UserRoute()))),
-                        );
-                      },
-                    ),
-                  )
-                : Container()
-          ],
-        ),
+      appBar: AppBar(
+        leading: null,
+        title: const Align(
+            alignment: Alignment.centerLeft, child: Text("JSON Demo")),
+        actions: const [
+          IconButton(
+            onPressed: null,
+            icon: Icon(Icons.attach_money_sharp),
+            iconSize: 40.0,
+          ),
+        ],
       ),
+      // body: user_widget()
     );
   }
+
+  // Widget _userList() {
+  //   readJson();
+  //   return Scaffold(
+  //     body: Padding(
+  //       padding: const EdgeInsets.all(25),
+  //       child: Column(
+  //         children: [
+  //           // ElevatedButton(
+  //           //   child: const Text('Load Data'),
+  //           //   onPressed: readJson,
+  //           // ),
+
+  //           // Display the data loaded from sample.json
+  //           _users.isNotEmpty
+  //               ? Expanded(
+  //                   child: ListView.builder(
+  //                     itemCount: _users.length,
+  //                     itemBuilder: (context, index) {
+  //                       List _restrictions = _users[index]['restrictions'];
+  //                       var rString = '';
+  //                       for (var i = 0; i < _restrictions.length - 1; i++) {
+  //                         rString += _restrictions[i] + ", ";
+  //                       }
+  //                       if (_users.isNotEmpty) {
+  //                         rString += _restrictions[_restrictions.length - 1];
+  //                       }
+  //                       return Card(
+  //                         margin: const EdgeInsets.all(10),
+  //                         child: ListTile(
+  //                             leading: Text('User ' + (index + 1).toString()),
+  //                             title: Text(_users[index]['name']),
+  //                             subtitle: Text("Restrictions: " + rString),
+  //                             onTap: () => Navigator.push(
+  //                                 context,
+  //                                 MaterialPageRoute(
+  //                                     builder: (context) => UserRoute()))),
+  //                       );
+  //                     },
+  //                   ),
+  //                 )
+  //               : Container()
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
-class UserRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text("User Data")),
-        body: Center(child: Text("cuh")));
-  }
-}
+// class UserRoute extends StatelessWidget {
+//   const UserRoute({Key? key}) : super(key: key);
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         appBar: AppBar(title: Text("User Data")),
+//         body: Center(child: Text("cuh")));
+//   }
+// }
 
 
 // class MyApp extends StatelessWidget {
