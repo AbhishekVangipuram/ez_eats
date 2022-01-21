@@ -1,4 +1,5 @@
 import 'package:ez_eats/screens/add_user_screen.dart';
+import 'package:ez_eats/screens/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'add_user_screen.dart';
 
@@ -16,7 +17,12 @@ class UserListScreen extends StatelessWidget {
           child: ListView(children: [
             _userTile(),
             _userTile(),
-            _addUserButton(context)
+            _addUserButton(context),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SearchScreen()));
+              }, 
+              child: const Text("Done"))
           ]
           )
         )
@@ -25,16 +31,19 @@ class UserListScreen extends StatelessWidget {
   }
 
   Widget _userTile() {
-    return ListTile();
+    return const ListTile(title:  Text("NAME"), subtitle:  Text("allergies: "), onTap: null,);
   }
 
   Widget _addUserButton(BuildContext context) {
     // use either OutlinedButton or ElevatedButton
-    return OutlinedButton.icon(
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 95),
+      child: ElevatedButton.icon(
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => const AddUserScreen()));
         },
         icon: const Icon(Icons.add),
-        label: const Text("Add User"));
+        label: const Text("Add User"))
+    );
   }
 }
