@@ -1,8 +1,15 @@
 // import 'package:ez_eats/users.dart';
 import 'package:flutter/material.dart';
 
-class AddUserScreen extends StatelessWidget {
+class AddUserScreen extends StatefulWidget {
   const AddUserScreen({Key? key}) : super(key: key);
+
+  @override
+  _AddUserScreenState createState() => _AddUserScreenState();
+  
+}
+
+class _AddUserScreenState extends State<AddUserScreen>{
 
   @override
   Widget build(BuildContext context) {
@@ -14,27 +21,68 @@ class AddUserScreen extends StatelessWidget {
               padding: const EdgeInsets.only(
                   left: 40, right: 40, top: 10, bottom: 10),
               // could use ListView.Builder
-              child: ListView(children: [
-                _restrictionTile("Vegetarian", false),
-                _restrictionTile("Vegan", false),
-                _restrictionTile("Dairy", false),
-                _restrictionTile("Soy", false),
-                _saveButton()
+              child: Column(
+                children: [
+                  _nameInput(),
+                  Container(
+                    constraints: const BoxConstraints(maxHeight: 300),
+                    child: ListView(
+                      children: [
+                        _restrictionTile("Vegetarian"),
+                        _restrictionTile("Vegan"),
+                        _restrictionTile("Dairy"),
+                        _restrictionTile("Soy"),
+                        _restrictionTile("Soy"),
+                        _restrictionTile("Soy"),
+                        _restrictionTile("SoyAAAAAAAA"),
+                        _restrictionTile("SoyBBBBBBBB"),
+
+                      ],
+                    ),
+                  ),
+                  _saveButton(context)
               ]))),
     );
   }
 
-  Widget _restrictionTile(String label, bool? value) {
-    return CheckboxListTile(
-        value: value,
-        onChanged: (bool? val) {
-          val = val!;
-        });
+  Widget _nameInput(){
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: TextField(
+        decoration: const InputDecoration(
+          // PUT OTHER DECORATORS HERE MAYBE
+          labelText: "Name"
+        ),
+        onTap: () {
+
+        },
+      )
+    );
   }
 
-  Widget _saveButton() {
+  Widget _restrictionTile(String label) {
+    bool? val = false;
+    return CheckboxListTile(
+      title: Text(label, style: const TextStyle()),
+      value: val,
+      onChanged: (bool? value) {
+        setState(() {
+          val = value;
+        });
+      },
+    );
+  }
+
+  Widget _saveButton(BuildContext context) {
     return ElevatedButton.icon(
-        onPressed: null,
+        onPressed: () {
+          // ********************
+          // WRITE TO JSON
+          // ********************
+
+          Navigator.pop(context);
+
+        },
         icon: const Icon(Icons.save_outlined),
         label: const Text("Save"));
   }

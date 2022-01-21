@@ -20,12 +20,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "App Demo",
-        theme: ThemeData(
-            appBarTheme: AppBarTheme(
-                backgroundColor: Colors.blue[300],
-                foregroundColor: Colors.white)),
-        home: const UserListScreen());
+      debugShowCheckedModeBanner: false,
+      title: "App Demo",
+      theme: ThemeData(
+          appBarTheme: AppBarTheme(
+              backgroundColor: Colors.green[300],
+              foregroundColor: Colors.white)),
+      home: const UserListScreen());
   }
 }
 
