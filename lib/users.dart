@@ -1,6 +1,6 @@
 class User {
   String name;
-  List<bool> restrictions;
+  List restrictions;
 
   User(this.name, this.restrictions);
 
