@@ -59,14 +59,20 @@ class _AddUserScreenState extends State<AddUserScreen>{
       )
     );
   }
-
+  
+  bool? val = false;
   Widget _restrictionTile(String label) {
-    bool? val = false;
+    
     return CheckboxListTile(
       title: Text(label, style: const TextStyle()),
+      secondary: null,
+      controlAffinity: ListTileControlAffinity.leading,
+      // activeColor: ,
+      // checkColor: ,
       value: val,
       onChanged: (bool? value) {
         setState(() {
+          // replace "val" with the corresponing JSON field
           val = value;
         });
       },
