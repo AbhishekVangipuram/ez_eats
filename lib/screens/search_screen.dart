@@ -11,7 +11,7 @@ class SearchScreen extends StatelessWidget{
         padding: const EdgeInsets.all(32),
         child: ListView(
           children: const [
-            ListTile(title: Text("HELLO WORLD")),
+            // ListTile(title: Text("HELLO WORLD")),
             TextField(
               decoration: InputDecoration(
                 icon: Icon(Icons.search),

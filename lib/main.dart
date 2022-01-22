@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(
               backgroundColor: Colors.green[300],
               foregroundColor: Colors.white)),
-      home: const UserListScreen());
+      home: UserListScreen());
   }
 }
 

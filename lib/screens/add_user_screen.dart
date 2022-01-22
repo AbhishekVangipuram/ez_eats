@@ -14,6 +14,7 @@ class _AddUserScreenState extends State<AddUserScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar:
           AppBar(leading: null, title: const Text("Add User"), actions: []),
       body: Center(
