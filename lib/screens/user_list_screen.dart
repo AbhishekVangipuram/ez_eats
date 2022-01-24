@@ -107,6 +107,8 @@ class _UserListScreenState extends State<UserListScreen>{
     readJson();
   }
 
+  List userChecks = [false, false, false];
+
   @override
   Widget build(BuildContext context) {
     // print("before writing to json");
@@ -151,8 +153,8 @@ class _UserListScreenState extends State<UserListScreen>{
               child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                for(var user in users_) 
-                  _userTile(user['name'], user['restrictions'])
+                for(var i = 0; i<users_.length; i++) 
+                  _userTile(users_[i]['name'], users_[i]['restrictions'], i)
                 ]
               ),
             ),
@@ -170,9 +172,17 @@ class _UserListScreenState extends State<UserListScreen>{
     );
   }
 
-  Widget _userTile(String name, List restrictions) {
+  Widget _userTile(String name, List restrictions, int idx) {
     String rStr = restrictions.fold("",(prev, element) => '$prev, $element').substring(2);
-    return ListTile(title:  Text(name), subtitle:  Text(rStr), onTap: null,);
+    return CheckboxListTile(
+      title:  Text(name), subtitle:  Text(rStr), 
+      value: userChecks[idx],
+      onChanged: (value) {
+        setState(() {
+          userChecks[idx] = value!;
+        });
+      }
+    );
   }
 
   Widget _addUserButton(BuildContext context) {
