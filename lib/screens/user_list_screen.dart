@@ -107,7 +107,7 @@ class _UserListScreenState extends State<UserListScreen>{
     readJson();
   }
 
-  List userChecks = [false, false, false];
+  List userChecks = List.filled(20, false);
 
   @override
   Widget build(BuildContext context) {
