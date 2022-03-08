@@ -4,16 +4,31 @@ import 'package:ez_eats/screens/add_user_screen.dart';
 import 'package:ez_eats/screens/user_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
+// import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:sqflite/sqflite.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
 List _users = [];
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
-  
+
+}
+
+Future<Box> getBox (String name) async{
+  bool exists = await Hive.boxExists(name);
+  return exists ? Hive.box(name) : await Hive.openBox(name);
+}
+
+void writeToBox(String name, var data) async {
+  var box = await getBox(name);
+  box.add(data);
 }
 
 class MyApp extends StatelessWidget {
