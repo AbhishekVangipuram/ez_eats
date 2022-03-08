@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:sqflite/sqflite.dart';
+// import 'package:sqflite/sqflite.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -15,20 +15,29 @@ List _users = [];
 
 void main() async {
   await Hive.initFlutter();
-  
+  await Hive.openBox("text");
+  Hive.box("text").put("center_text", "");
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
-
 }
 
+/// HIVE STUFF
 Future<Box> getBox (String name) async{
   bool exists = await Hive.boxExists(name);
   return exists ? Hive.box(name) : await Hive.openBox(name);
+
+  // could also do following
+  // return await Hive.openBox(name);
 }
 
-void writeToBox(String name, var data) async {
+Future<int> writeToBox2(String name, var data) async {
   var box = await getBox(name);
-  box.add(data);
+  return await box.add(data);
+}
+
+void writeToBox(String name, String key, var value) async {
+  var box = await getBox(name);
+  box.put(key, value);
 }
 
 class MyApp extends StatelessWidget {
@@ -43,7 +52,7 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(
               backgroundColor: Colors.green[300],
               foregroundColor: Colors.white)),
-      home: UserListScreen());
+      home: AppBody());
   }
 }
 
@@ -65,8 +74,17 @@ class _AppBodyState extends State<AppBody> {
     });
   }
 
+  TextEditingController clr = TextEditingController();
+  String text = "start";
+  @override
+  void initState(){
+    super.initState();
+    // Hive.openBox("text");
+  }
   @override
   Widget build(BuildContext context) {
+    // print(Hive.box("text").values);
+    // print(Hive.box("text").get("center_text"));
     return Scaffold(
       appBar: AppBar(
         leading: null,
@@ -80,7 +98,37 @@ class _AppBodyState extends State<AppBody> {
           ),
         ],
       ),
-      // body: user_widget()
+      body: Center(
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(32),
+              child: TextField(
+                controller: clr,
+                onChanged:(text) { 
+                  print("TEXT: $text");
+                  Hive.box("text").put("center_text", text);
+                  print("Box: ${Hive.box("text").get("center_text")}");
+                  setState(() {
+                    text = Hive.box("text").get("center_text");
+                  });
+                  print("TEXT VAR: $text");
+                },
+              ), 
+            ),
+            Text(text),
+            // const Text("TEXT ON THE SCREEN")
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                    text = Hive.box("text").get("center_text");
+                });
+              }, 
+              child: const Text("Change Text"))
+            ],
+        ),
+        )
     );
   }
 
