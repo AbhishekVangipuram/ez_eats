@@ -1,6 +1,7 @@
 // import 'dart:developer';
 import 'dart:convert';
 import 'package:ez_eats/screens/add_user_screen.dart';
+import 'package:ez_eats/screens/search_screen.dart';
 import 'package:ez_eats/screens/user_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +18,9 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox("text");
   Hive.box("text").put("center_text", "");
+  await Hive.openBox("favorites");
+  await Hive.box("favorites").put("McDonald's", false);
+  await Hive.box('favorites').put("Panera Bread", false);
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
@@ -52,7 +56,7 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(
               backgroundColor: Colors.green[300],
               foregroundColor: Colors.white)),
-      home: AppBody());
+      home: SearchScreen());
   }
 }
 
