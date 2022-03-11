@@ -52,12 +52,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "App Demo",
-      theme: ThemeData(
-          appBarTheme: AppBarTheme(
-              backgroundColor: Colors.green[300],
-              foregroundColor: Colors.white)),
-      home: SearchScreen());
+      // theme: ThemeData(
+      //     appBarTheme: AppBarTheme(
+              // backgroundColor: Colors.green[300],
+              // foregroundColor: Colors.white)),
+      home: UserListScreen());
   }
+  // return UserListScreen();
 }
 
 class AppBody extends StatefulWidget {
