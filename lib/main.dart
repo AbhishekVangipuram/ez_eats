@@ -1,6 +1,7 @@
 // import 'dart:developer';
 import 'dart:convert';
 import 'package:ez_eats/screens/add_user_screen.dart';
+import 'package:ez_eats/screens/search_screen.dart';
 import 'package:ez_eats/screens/user_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,12 +24,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "App Demo",
-      theme: ThemeData(
-          appBarTheme: AppBarTheme(
-              backgroundColor: Colors.green[300],
-              foregroundColor: Colors.white)),
+      // theme: ThemeData(
+      //     appBarTheme: AppBarTheme(
+              // backgroundColor: Colors.green[300],
+              // foregroundColor: Colors.white)),
       home: UserListScreen());
   }
+  // return UserListScreen();
 }
 
 class AppBody extends StatefulWidget {
