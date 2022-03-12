@@ -46,27 +46,28 @@ class _SearchScreenState extends State<SearchScreen>{
       // height: 150,
       child: Card(
         child: InkWell(
-          splashColor: Colors.grey.withAlpha(50),
+          splashColor: Colors.blueGrey.withAlpha(50),
           onTap: () {
 
           },
           child: Column(
+
             children: [
               // Image.asset(imgPath),
-              Text(name, style: const TextStyle(fontSize: 18, fontFamily: "")),
-              Text("DESCRIPTION", style: const TextStyle(fontSize: 14, color: Colors.grey)),
+              Text(name, style: const TextStyle(fontSize: 24, fontFamily: "")),
+              // Text("DESCRIPTION", style: const TextStyle(fontSize: 14, color: Colors.grey)),
               ButtonBar(
                 alignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextButton(
                     onPressed: () {
-                      print('BUTTON PRESSED');
+                      // print('BUTTON PRESSED');
                     },
-                    child: Text("Button 1", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange[500]))
+                    child: Text("MORE", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange[500]))
                   ),
                   IconButton(
                     onPressed: () {
-                      print('ICON PRESSED'); 
+                      // print('ICON PRESSED'); 
                       setState(() {
                           Hive.box("favorites").put(name, !Hive.box("favorites").get(name));
                       });
