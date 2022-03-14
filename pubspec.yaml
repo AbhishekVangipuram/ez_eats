@@ -81,6 +81,8 @@ flutter:
     - assets/images/rectangle2.svg
     - assets/images/Usericon.png
     - assets/images/search.png
+    - assets/images/loupe.png
+    - assets/images/add-user.png
     - assets/images/logo.png
     - assets/images/mcdonalds/
     - assets/images/panera/

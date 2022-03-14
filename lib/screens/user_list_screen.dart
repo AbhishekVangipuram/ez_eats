@@ -152,7 +152,7 @@ class _UserListScreenState extends State<UserListScreen> {
                 child: Container(
                     padding: EdgeInsets.only(
                       // top: 0.02 * deviceHeight,
-                      bottom: deviceHeight * 0.05,
+                      bottom: deviceHeight * 0.025,
                       // left: 0.05 * deviceWidth,
                       // right: 0.05 * deviceWidth),
                     ),
@@ -162,14 +162,15 @@ class _UserListScreenState extends State<UserListScreen> {
                       userList,
                       space(20, 0),
                       Container(
-                        padding: EdgeInsets.only(left: 0.05 * deviceHeight, right: 0.05 * deviceWidth),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          searchButton(context),
-                          _addUserButton(),
-                        ],
-                      )),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 0.05 * deviceWidth),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              searchButton(context),
+                              _addUserButton(),
+                            ],
+                          )),
                     ])))));
   }
 
@@ -186,7 +187,7 @@ class _UserListScreenState extends State<UserListScreen> {
         .substring(2);
     return Container(
         padding: EdgeInsets.only(
-            left: 0.05 * deviceHeight, right: 0.05 * deviceWidth, bottom: 15),
+            left: 0.05 * deviceWidth, right: 0.05 * deviceWidth, bottom: 15),
         child: Material(
             elevation: 8,
             borderRadius: BorderRadius.circular(10),
@@ -226,11 +227,14 @@ class _UserListScreenState extends State<UserListScreen> {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => SearchScreen()));
             },
-            child: Ink.image(
-                image: const AssetImage("assets/images/search.png"),
-                fit: BoxFit.cover,
-                height: 34,
-                width: 34)));
+            child: Container(
+                padding: const EdgeInsets.all(8),
+                height: 40,
+                width: 40,
+                child: Ink.image(
+                  image: const AssetImage("assets/images/loupe.png"),
+                  fit: BoxFit.contain,
+                ))));
   }
 
   Widget _addUserButton() {
@@ -252,11 +256,14 @@ class _UserListScreenState extends State<UserListScreen> {
               //     MaterialPageRoute(
               //         builder: (context) => const AddUserScreen()));
             },
-            child: Ink.image(
-                image: const AssetImage("assets/images/Adduserbutton.png"),
-                fit: BoxFit.cover,
-                height: 34,
-                width: 34)));
+            child: Container(
+                padding: const EdgeInsets.all(8),
+                height: 40,
+                width: 40,
+                child: Ink.image(
+                  image: const AssetImage("assets/images/add-user.png"),
+                  fit: BoxFit.contain,
+                ))));
 
     //   child: ElevatedButton.icon(
     //     onPressed: () {
@@ -336,30 +343,32 @@ class _UserListScreenState extends State<UserListScreen> {
     //     label: const Text("Save"));
 
     return TextButton.icon(
-      onPressed: () {
-        // ********************
-        // WRITE TO JSON
-        // ********************
-        String _name = controller.text;
-        List restrictions = [];
-        for (String key in responses.keys) {
-          if (responses[key]!) {
-            restrictions.add(key);
+        onPressed: () {
+          // ********************
+          // WRITE TO JSON
+          // ********************
+          String _name = controller.text;
+          List restrictions = [];
+          for (String key in responses.keys) {
+            if (responses[key]!) {
+              restrictions.add(key);
+              responses[key] = false;
+            }
           }
-        }
-        writeJson(_name, restrictions);
-        Navigator.pop(context);
-      }, 
-      icon: const Icon(Icons.save_outlined, color: Colors.green), 
-      label: const Text("SAVE", style: TextStyle(color: Colors.green)));
-
+          writeJson(_name, restrictions);
+          controller.clear();
+          Navigator.pop(context);
+        },
+        icon: const Icon(Icons.save_outlined, color: Colors.green),
+        label: const Text("SAVE", style: TextStyle(color: Colors.green)));
   }
 
   Widget logoBar(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     return Container(
-        padding: EdgeInsets.only(left: 0.05 * deviceHeight, right: 0.05 * deviceWidth),
+        padding: EdgeInsets.only(
+            left: 0.05 * deviceWidth, right: 0.05 * deviceWidth),
         height: 50,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
