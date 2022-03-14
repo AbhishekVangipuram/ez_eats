@@ -2,6 +2,7 @@ import 'package:ez_eats/screens/add_user_screen.dart';
 import 'package:ez_eats/screens/restaurant_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart'; 
+import 'package:animations/animations.dart';
 
 class SearchScreen extends StatefulWidget{
   SearchScreen({Key? key}) : super(key: key);
@@ -41,6 +42,23 @@ class _SearchScreenState extends State<SearchScreen>{
     );
   }
   
+  Widget restaurantInfoButton(String name) {
+    return 
+    OpenContainer(
+      closedElevation: 0.0,
+      openElevation: 4.0,
+      closedBuilder: closedBuilder,
+      openBuilder: openBuilder
+    )
+    TextButton(
+      onPressed: () {
+        // print('BUTTON PRESSED');
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => RestaurantScreen(name: name) ));
+      },
+      child: Text("MORE", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange[500]))
+    );
+  }
+
   Widget restaurantCard(String name, String imgPath){
     bool alreadySaved = Hive.box("favorites").get(name);
     return SizedBox(
@@ -61,13 +79,7 @@ class _SearchScreenState extends State<SearchScreen>{
               ButtonBar(
                 alignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  TextButton(
-                    onPressed: () {
-                      // print('BUTTON PRESSED');
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => RestaurantScreen() ));
-                    },
-                    child: Text("MORE", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange[500]))
-                  ),
+                  restaurantInfoButton(name),
                   IconButton(
                     onPressed: () {
                       // print('ICON PRESSED'); 

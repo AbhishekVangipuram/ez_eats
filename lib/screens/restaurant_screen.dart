@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class RestaurantScreen extends StatefulWidget {
-  const RestaurantScreen({Key? key}) : super(key: key);
+  final String name;
+
+  const RestaurantScreen({Key? key, required this.name}) : super(key: key);
 
   @override
   _RestaurantScreenState createState() => _RestaurantScreenState();
