@@ -1,3 +1,5 @@
+import 'package:ez_eats/screens/add_user_screen.dart';
+import 'package:ez_eats/screens/restaurant_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart'; 
 
@@ -28,6 +30,7 @@ class _SearchScreenState extends State<SearchScreen>{
                 labelText: "Search"
                 ),
               ),
+            const SizedBox(height: 30,),
             restaurantList()
             
             ],
@@ -38,12 +41,11 @@ class _SearchScreenState extends State<SearchScreen>{
     );
   }
   
-  Widget restaurantCard(String name){
-    String imgPath = '';
+  Widget restaurantCard(String name, String imgPath){
     bool alreadySaved = Hive.box("favorites").get(name);
     return SizedBox(
-      width: 300,
-      // height: 150,
+      width: 225,
+      height: null,
       child: Card(
         child: InkWell(
           splashColor: Colors.blueGrey.withAlpha(50),
@@ -53,7 +55,7 @@ class _SearchScreenState extends State<SearchScreen>{
           child: Column(
 
             children: [
-              // Image.asset(imgPath),
+              Image.asset(imgPath, width: 225, height: 100, fit: BoxFit.fill ),
               Text(name, style: const TextStyle(fontSize: 24, fontFamily: "")),
               // Text("DESCRIPTION", style: const TextStyle(fontSize: 14, color: Colors.grey)),
               ButtonBar(
@@ -62,6 +64,7 @@ class _SearchScreenState extends State<SearchScreen>{
                   TextButton(
                     onPressed: () {
                       // print('BUTTON PRESSED');
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => RestaurantScreen() ));
                     },
                     child: Text("MORE", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange[500]))
                   ),
@@ -83,11 +86,14 @@ class _SearchScreenState extends State<SearchScreen>{
   }
 
   Widget restaurantList(){
-    return Column(
-      children: [
-        restaurantCard("McDonald's"),
-        restaurantCard("Panera Bread")
-      ],
+    return SingleChildScrollView(
+      child: Column(
+          children: [
+            restaurantCard("McDonald's", "assets/images/mcdonalds/mcdonalds-card.jpg"),
+            const SizedBox(height: 5),
+            restaurantCard("Panera Bread", "assets/images/panera/panera-card.jpg")
+          ],
+        )
     );
   }
   

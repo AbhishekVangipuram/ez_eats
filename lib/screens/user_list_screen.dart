@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -281,20 +282,24 @@ class _UserListScreenState extends State<UserListScreen> {
               Flexible(
                 // constraints:
                 //     const BoxConstraints(maxHeight: 300),
-                child: ListView(
-                  children: responses.keys.map((String key) {
-                    return CheckboxListTile(
-                      enableFeedback: true,
-                      selected: false,
-                      title: Text(key),
-                      value: responses[key],
-                      onChanged: (bool? value) {
-                        setState(() {
-                          responses[key] = value!;
-                        });
-                      },
+                child: StatefulBuilder(
+                  builder: (context, setState) {
+                    return ListView(
+                      children: responses.keys.map((String key) {
+                        return CheckboxListTile(
+                          enableFeedback: true,
+                          selected: false,
+                          title: Text(key),
+                          value: responses[key],
+                          onChanged: (bool? value) {
+                            setState(() {
+                              responses[key] = value!;
+                            });
+                          },
+                        );
+                      }).toList(),
                     );
-                  }).toList(),
+                  },
                 ),
               ),
               _saveButton(context)
@@ -312,23 +317,42 @@ class _UserListScreenState extends State<UserListScreen> {
   }
 
   Widget _saveButton(BuildContext context) {
-    return ElevatedButton.icon(
-        onPressed: () {
-          // ********************
-          // WRITE TO JSON
-          // ********************
-          String _name = controller.text;
-          List restrictions = [];
-          for (String key in responses.keys) {
-            if (responses[key]!) {
-              restrictions.add(key);
-            }
+    // return ElevatedButton.icon(
+    //     onPressed: () {
+    //       // ********************
+    //       // WRITE TO JSON
+    //       // ********************
+    //       String _name = controller.text;
+    //       List restrictions = [];
+    //       for (String key in responses.keys) {
+    //         if (responses[key]!) {
+    //           restrictions.add(key);
+    //         }
+    //       }
+    //       writeJson(_name, restrictions);
+    //       Navigator.pop(context);
+    //     },
+    //     icon: const Icon(Icons.save_outlined),
+    //     label: const Text("Save"));
+
+    return TextButton.icon(
+      onPressed: () {
+        // ********************
+        // WRITE TO JSON
+        // ********************
+        String _name = controller.text;
+        List restrictions = [];
+        for (String key in responses.keys) {
+          if (responses[key]!) {
+            restrictions.add(key);
           }
-          writeJson(_name, restrictions);
-          Navigator.pop(context);
-        },
-        icon: const Icon(Icons.save_outlined),
-        label: const Text("Save"));
+        }
+        writeJson(_name, restrictions);
+        Navigator.pop(context);
+      }, 
+      icon: const Icon(Icons.save_outlined, color: Colors.green), 
+      label: const Text("SAVE", style: TextStyle(color: Colors.green)));
+
   }
 
   Widget logoBar(BuildContext context) {
