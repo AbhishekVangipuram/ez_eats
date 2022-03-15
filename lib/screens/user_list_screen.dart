@@ -224,7 +224,7 @@ class _UserListScreenState extends State<UserListScreen> {
         clipBehavior: Clip.antiAlias,
         child: InkWell(
             onTap: () {
-              Navigator.of(context).pushReplacement(
+              Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => SearchScreen()));
             },
             child: Container(
