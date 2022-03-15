@@ -7,10 +7,13 @@ class RestaurantScreen extends StatefulWidget {
   const RestaurantScreen({Key? key, required this.name}) : super(key: key);
 
   @override
-  _RestaurantScreenState createState() => _RestaurantScreenState();
+  // ignore: no_logic_in_create_state
+  _RestaurantScreenState createState() => _RestaurantScreenState(name);
 }
 
 class _RestaurantScreenState extends State<RestaurantScreen> {
+  final String name;
+  _RestaurantScreenState(this.name);
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -24,15 +27,27 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
               IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.arrow_back_ios_new_sharp)),
-              const IconButton(
-                  onPressed: null, icon: Icon(Icons.circle_outlined))
+              // const IconButton(
+              //     onPressed: null, icon: Icon(Icons.circle_outlined))
             ],
           ),
           SizedBox(
               height: 200,
               width: 350,
-              child: Image.asset('assets/images/mcdonalds/mcdonalds-card.jpg',
-                  height: 200, width: null, fit: BoxFit.fill))
+              child: Image.asset('assets/images/$name/$name-card.jpg',
+                  height: 200, width: null, fit: BoxFit.fill)),
+          ListTile(
+            leading: Image.asset("assets/images/mcdonalds/mcdonalds-bacon-egg-cheese-biscuit.jpg", width: 50,),
+            title: const Text("Bacon, Egg & Cheese Biscuit"),
+          ),
+          ListTile(
+            leading: Image.asset("assets/images/mcdonalds/mcdonalds-egg-mcmuffin.jpg", width: 50,),
+            title: const Text("Egg McMuffin"),
+          ),
+          ListTile(
+            leading: Image.asset("assets/images/mcdonalds/mcdonalds-sausage-mcmuffin.jpg", width: 50,),
+            title: const Text("Sausage McMuffin"),
+          ),
         ],
       ),
     )));

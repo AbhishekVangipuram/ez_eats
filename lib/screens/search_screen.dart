@@ -43,23 +43,27 @@ class _SearchScreenState extends State<SearchScreen>{
   }
   
   Widget restaurantInfoButton(String name) {
-    return 
-    OpenContainer(
+    return OpenContainer(
+      transitionType: ContainerTransitionType.fade,
+      transitionDuration: const Duration(milliseconds: 500),
       closedElevation: 0.0,
       openElevation: 4.0,
-      closedBuilder: closedBuilder,
-      openBuilder: openBuilder
-    )
-    TextButton(
-      onPressed: () {
-        // print('BUTTON PRESSED');
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => RestaurantScreen(name: name) ));
+      closedBuilder: (context, action) {
+        return TextButton(
+          onPressed: () {
+            // print('BUTTON PRESSED');
+            // Navigator.of(context).push(MaterialPageRoute(builder: (context) => RestaurantScreen(name: name) ));
+            action();
+          },
+          child: Text("MORE", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange[500]))
+        );
       },
-      child: Text("MORE", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange[500]))
+      openBuilder: (context, action) => RestaurantScreen(name: name),
+      tappable: false,
     );
   }
 
-  Widget restaurantCard(String name, String imgPath){
+  Widget restaurantCard(String name, String imgPathName){
     bool alreadySaved = Hive.box("favorites").get(name);
     return SizedBox(
       width: 225,
@@ -73,13 +77,13 @@ class _SearchScreenState extends State<SearchScreen>{
           child: Column(
 
             children: [
-              Image.asset(imgPath, width: 225, height: 100, fit: BoxFit.fill ),
+              Image.asset("assets/images/$imgPathName/$imgPathName-card.jpg", width: 225, height: 100, fit: BoxFit.fill ),
               Text(name, style: const TextStyle(fontSize: 24, fontFamily: "")),
               // Text("DESCRIPTION", style: const TextStyle(fontSize: 14, color: Colors.grey)),
               ButtonBar(
                 alignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  restaurantInfoButton(name),
+                  restaurantInfoButton(imgPathName),
                   IconButton(
                     onPressed: () {
                       // print('ICON PRESSED'); 
@@ -101,9 +105,9 @@ class _SearchScreenState extends State<SearchScreen>{
     return SingleChildScrollView(
       child: Column(
           children: [
-            restaurantCard("McDonald's", "assets/images/mcdonalds/mcdonalds-card.jpg"),
+            restaurantCard("McDonald's", "mcdonalds"),
             const SizedBox(height: 5),
-            restaurantCard("Panera Bread", "assets/images/panera/panera-card.jpg")
+            restaurantCard("Panera Bread", "panera")
           ],
         )
     );
