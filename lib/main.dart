@@ -21,6 +21,7 @@ void main() async {
   await Hive.openBox("favorites");
   await Hive.box("favorites").put("McDonald's", false);
   await Hive.box('favorites').put("Panera Bread", false);
+  await Hive.openBox("selected");
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }

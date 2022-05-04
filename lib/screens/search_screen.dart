@@ -16,6 +16,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Hive.openBox("selected");
     double deviceWidth = MediaQuery.of(context).size.width;
     return Center(
         child: Scaffold(
@@ -49,7 +50,7 @@ class _SearchScreenState extends State<SearchScreen> {
         return TextButton(
             onPressed: () {
               // print('BUTTON PRESSED');
-              // Navigator.of(context).push(MaterialPageRoute(builder: (context) => RestaurantScreen(name: name) ));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => RestaurantScreen(name: name) ));
               action();
             },
             child: Text("MORE",

@@ -7,6 +7,8 @@ import 'package:ez_eats/screens/add_user_screen.dart';
 import 'package:ez_eats/screens/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'add_user_screen.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class UserListScreen extends StatefulWidget {
   UserListScreen({Key? key}) : super(key: key);
@@ -129,7 +131,9 @@ class _UserListScreenState extends State<UserListScreen> {
   List userChecks = List.filled(20, false);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  
+    Hive.openBox("selected");
+    Hive.box("selected").putAll(responses);
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -224,6 +228,15 @@ class _UserListScreenState extends State<UserListScreen> {
         clipBehavior: Clip.antiAlias,
         child: InkWell(
             onTap: () {
+              for (var i = 0; i < users_.length; i++){
+                bool sel = userChecks[i];
+                if(sel) {
+                  List rest = users_[i]['restrictions'];
+                  for (var v = 0; v < rest.length; v++) {
+                    Hive.box("selected").put(rest[v], true);
+                  }
+                }
+              }
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => SearchScreen()));
             },
