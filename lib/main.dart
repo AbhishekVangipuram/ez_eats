@@ -22,6 +22,16 @@ void main() async {
   await Hive.box("favorites").put("McDonald's", false);
   await Hive.box('favorites').put("Panera Bread", false);
   await Hive.openBox("selected");
+  await Hive.openBox("mcdonalds");
+  await Hive.box("mcdonalds").put("Big Mac", ['Wheat', 'Sesame', 'Dairy', 'Egg', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds").put("Cheeseburger", ['Wheat', 'Dairy', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds").put("Double Cheeseburger", ['Wheat', 'Dairy', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds").put("Quarter Pounder with Cheese", ['Wheat', 'Sesame', 'Dairy', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds").put("Double Quarter Pounder with Cheese", ['Wheat', 'Sesame', 'Dairy', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds").put("Hamburger", ['Wheat', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds").put("Double Cheeseburger", ['Wheat', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds").put("Chicken McNuggets", ['Wheat', 'Vegetarian', 'Vegan']);
+
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }

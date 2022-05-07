@@ -124,7 +124,7 @@ class _UserListScreenState extends State<UserListScreen> {
     super.initState();
     // writeJson("Jimmy", ["Peanuts", "Tree nuts"]);
     // writeJson("bruh", ["Vegetarian"]);
-
+    Hive.box("selected").putAll(responses);
     readJson();
   }
 
@@ -133,7 +133,6 @@ class _UserListScreenState extends State<UserListScreen> {
   @override
   Widget build(BuildContext context) {  
     Hive.openBox("selected");
-    Hive.box("selected").putAll(responses);
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(

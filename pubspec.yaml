@@ -77,7 +77,8 @@ flutter:
   assets:
     - data/restaurants.json
     - data/users.json
-    - assets/
+    - assets/images/
+    - assets/images/mcdonalds/
     # - assets/images/Adduserbutton.png
     # - assets/images/checkbox.svg
     # - assets/images/rectangle2.svg
