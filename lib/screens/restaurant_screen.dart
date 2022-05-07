@@ -1,3 +1,5 @@
+import 'package:ez_eats/screens/search_screen.dart';
+import 'package:ez_eats/screens/user_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -62,8 +64,14 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             alignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                  onPressed: () => Navigator.pop(context),
+                  // onPressed: () => Navigator.pop(context),
+                  onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => SearchScreen())),
                   icon: const Icon(Icons.arrow_back_ios_new_sharp)),
+              IconButton(onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => UserListScreen())),
+                  icon: const Icon(Icons.home)
+                  )
               // const IconButton(
               //     onPressed: null, icon: Icon(Icons.circle_outlined))
             ],

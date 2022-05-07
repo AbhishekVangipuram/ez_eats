@@ -1,5 +1,6 @@
 import 'package:ez_eats/screens/add_user_screen.dart';
 import 'package:ez_eats/screens/restaurant_screen.dart';
+import 'package:ez_eats/screens/user_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:animations/animations.dart';
@@ -22,21 +23,43 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Scaffold(
             body: SafeArea(
       child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 0.05 * deviceWidth),
+          // padding: EdgeInsets.symmetric(horizontal: 0.05 * deviceWidth),
           child: ListView(
-        children: [
-          // ListTile(title: Text("HELLO WORLD")),
-          TextField(
-            controller: clr,
-            decoration: const InputDecoration(
-                icon: Icon(Icons.search), labelText: "Search"),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          restaurantList()
-        ],
-      )),
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                      // onPressed: () => Navigator.pop(context),
+                      onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => UserListScreen())),
+                      icon: const Icon(Icons.arrow_back_ios_new_sharp)),
+                  const SizedBox(width: 7),
+                  RichText(
+                    text: TextSpan(
+                      text: "Restaurants",
+                      style: TextStyle(
+                          color: Colors.black.withOpacity(0.6),
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30),
+                    ),
+                  )
+                ],
+              ),
+              // ListTile(title: Text("HELLO WORLD")),
+              // TextField(
+              //   controller: clr,
+              //   decoration: const InputDecoration(
+              //       icon: Icon(Icons.search), labelText: "Search"),
+              // ),
+              // const SizedBox(
+              //   height: 30,
+              // ),
+              restaurantList()
+            ],
+          )),
     )));
   }
 
@@ -50,7 +73,8 @@ class _SearchScreenState extends State<SearchScreen> {
         return TextButton(
             onPressed: () {
               // print('BUTTON PRESSED');
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => RestaurantScreen(name: name) ));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => RestaurantScreen(name: name)));
               action();
             },
             child: Text("MORE",

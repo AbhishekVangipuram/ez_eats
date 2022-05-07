@@ -21,6 +21,7 @@ class _UserListScreenState extends State<UserListScreen> {
   bool _fileExists = false;
   File _filePath = File("");
 
+
   // First initialization of _json (if there is no json in the file)
   List users_ = [];
   // Map<String, dynamic> _json = {};
@@ -227,10 +228,13 @@ class _UserListScreenState extends State<UserListScreen> {
         clipBehavior: Clip.antiAlias,
         child: InkWell(
             onTap: () {
+              Hive.box("selected").flush();
+              Hive.box("selected").putAll(responses);
+
               for (var i = 0; i < users_.length; i++){
                 bool sel = userChecks[i];
+                List rest = users_[i]['restrictions'];
                 if(sel) {
-                  List rest = users_[i]['restrictions'];
                   for (var v = 0; v < rest.length; v++) {
                     Hive.box("selected").put(rest[v], true);
                   }
