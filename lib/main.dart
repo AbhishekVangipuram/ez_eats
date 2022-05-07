@@ -41,7 +41,7 @@ void main() async {
       .put("Chicken McNuggets", ['Wheat', 'Vegetarian', 'Vegan']);
   await Hive.box("mcdonalds").put("Hash Brown", []);
   await Hive.box("mcdonalds")
-      .put("Filet-o-Fish", ['Wheat', 'Dairy', 'Egg', 'Vegetarian', 'Vegan']);
+      .put("Filet-o-Fish", ['Wheat', 'Dairy', 'Egg', 'Fish', 'Vegetarian', 'Vegan']);
 
   await Hive.openBox("panera");
   await Hive.box("panera").put("Asiago Bagel", ['Wheat', 'Dairy', 'Vegan']);
