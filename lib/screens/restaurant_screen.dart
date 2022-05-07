@@ -31,27 +31,31 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
     size: 24.0,
   );
 
-  
-
   _RestaurantScreenState(this.name);
-
-  
 
   @override
   Widget build(BuildContext context) {
     Hive.openBox(name);
     Hive.openBox("selected");
-    
+
+    String displayName = "";
+    if (name == 'mcdonalds')
+      displayName = "McDonald's";
+    else {
+      displayName = "Panera Bread";
+    }
     String item = "";
     Widget _restaurantList = Expanded(
       child: SingleChildScrollView(
           child: Column(children: [
-            for(int i = 0; i < Hive.box(name).length; i++)
-              _restaurantTile(item = Hive.box(name).keyAt(i), Image.asset(
-                "assets/images/mcdonalds/$item.jpg",
+        for (int i = 0; i < Hive.box(name).length; i++)
+          _restaurantTile(
+              item = Hive.box(name).keyAt(i),
+              Image.asset(
+                "assets/images/$name/$item.jpg",
                 width: 50,
-              ), context),
-            
+              ),
+              context),
       ])),
     );
 
@@ -60,18 +64,28 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             body: SafeArea(
       child: Column(
         children: [
-          ButtonBar(
-            alignment: MainAxisAlignment.spaceBetween,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
                   // onPressed: () => Navigator.pop(context),
                   onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => SearchScreen())),
+                      MaterialPageRoute(builder: (context) => SearchScreen())),
                   icon: const Icon(Icons.arrow_back_ios_new_sharp)),
-              IconButton(onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => UserListScreen())),
-                  icon: const Icon(Icons.home)
-                  )
+              RichText(
+                text: TextSpan(
+                  text: displayName,
+                  style: TextStyle(
+                      color: Colors.black.withOpacity(0.6),
+                      // fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30),
+                ),
+              ),
+              IconButton(
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => UserListScreen())),
+                  icon: const Icon(Icons.home))
               // const IconButton(
               //     onPressed: null, icon: Icon(Icons.circle_outlined))
             ],
@@ -81,8 +95,9 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
               width: 350,
               child: Image.asset('assets/images/$name/$name-card.jpg',
                   height: 200, width: null, fit: BoxFit.fill)),
-                  
-          _restaurantList
+          const Padding(padding: EdgeInsets.only(bottom: 15)),
+          _restaurantList,
+
           // ListTile(
           // leading: Image.asset(
           //   "assets/images/mcdonalds/mcdonalds-bacon-egg-cheese-biscuit.jpg",
@@ -119,7 +134,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
     Hive.openBox(this.name);
     List r = Hive.box(this.name).get(name);
     for (int i = 0; i < r.length; i++) {
-      if(Hive.box("selected").get(r[i]) == true) {
+      if (Hive.box("selected").get(r[i]) == true) {
         setState(() {
           symbol = _x;
         });
@@ -129,7 +144,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
 
     return Container(
         padding: EdgeInsets.only(
-            left: 0.05 * deviceWidth, right: 0.05 * deviceWidth, top: 15),
+            left: 0.05 * deviceWidth, right: 0.05 * deviceWidth, bottom: 15),
         child: Material(
             elevation: 8,
             borderRadius: BorderRadius.circular(10),

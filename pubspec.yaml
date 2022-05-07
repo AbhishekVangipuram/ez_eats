@@ -46,6 +46,8 @@ dependencies:
   hive: ^2.0.6
   hive_flutter: ^1.1.0
   animations: ^2.0.2
+  fluttertoast: ^8.0.9
+
 
 
 dev_dependencies:
@@ -79,6 +81,7 @@ flutter:
     - data/users.json
     - assets/images/
     - assets/images/mcdonalds/
+    - assets/images/panera/
     # - assets/images/Adduserbutton.png
     # - assets/images/checkbox.svg
     # - assets/images/rectangle2.svg

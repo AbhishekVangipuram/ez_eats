@@ -23,21 +23,47 @@ void main() async {
   await Hive.box('favorites').put("Panera Bread", false);
   await Hive.openBox("selected");
   await Hive.openBox("mcdonalds");
-  await Hive.box("mcdonalds").put("Big Mac", ['Wheat', 'Sesame', 'Dairy', 'Egg', 'Vegetarian', 'Vegan']);
-  await Hive.box("mcdonalds").put("Cheeseburger", ['Wheat', 'Dairy', 'Vegetarian', 'Vegan']);
-  await Hive.box("mcdonalds").put("Double Cheeseburger", ['Wheat', 'Dairy', 'Vegetarian', 'Vegan']);
-  await Hive.box("mcdonalds").put("Quarter Pounder with Cheese", ['Wheat', 'Sesame', 'Dairy', 'Vegetarian', 'Vegan']);
-  await Hive.box("mcdonalds").put("Double Quarter Pounder with Cheese", ['Wheat', 'Sesame', 'Dairy', 'Vegetarian', 'Vegan']);
-  await Hive.box("mcdonalds").put("Hamburger", ['Wheat', 'Vegetarian', 'Vegan']);
-  await Hive.box("mcdonalds").put("Double Cheeseburger", ['Wheat', 'Vegetarian', 'Vegan']);
-  await Hive.box("mcdonalds").put("Chicken McNuggets", ['Wheat', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds").put(
+      "Big Mac", ['Wheat', 'Sesame', 'Dairy', 'Egg', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds")
+      .put("Cheeseburger", ['Wheat', 'Dairy', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds")
+      .put("Double Cheeseburger", ['Wheat', 'Dairy', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds").put("Quarter Pounder with Cheese",
+      ['Wheat', 'Sesame', 'Dairy', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds").put("Double Quarter Pounder with Cheese",
+      ['Wheat', 'Sesame', 'Dairy', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds")
+      .put("Hamburger", ['Wheat', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds")
+      .put("Double Cheeseburger", ['Wheat', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds")
+      .put("Chicken McNuggets", ['Wheat', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds").put("Hash Brown", []);
+  await Hive.box("mcdonalds")
+      .put("Filet-o-Fish", ['Wheat', 'Dairy', 'Egg', 'Vegetarian', 'Vegan']);
+
+  await Hive.openBox("panera");
+  await Hive.box("panera").put("Asiago Bagel", ['Wheat', 'Dairy', 'Vegan']);
+  await Hive.box("panera").put("Everything Bagel", ['Wheat', 'Sesame', 'Vegan']);
+  await Hive.box("panera").put("Mixed Berry Greek Yogurt Parfait", ['Wheat', 'Tree Nut', 'Dairy', 'Vegan']);
+  await Hive.box("panera").put("Blueberry Muffin", ['Wheat', 'Dairy', 'Egg', 'Vegan']);
+  await Hive.box("panera").put("Bear Claw", ['Wheat', 'Tree Nut', 'Dairy', 'Soy', 'Egg', 'Vegan']);
+  await Hive.box("panera").put("Mediterranean Bowl", ['Wheat', 'Dairy', 'Vegan']);
+  await Hive.box("panera").put("Greek Salad", ['Dairy', 'Vegan']);
+  await Hive.box("panera").put("Broccoli Cheddar Soup", ['Wheat', 'Dairy', 'Vegetarian', 'Vegan']);
+  await Hive.box("panera").put("Mac & Cheese", ['Wheat', 'Dairy', 'Egg', 'Vegan']);
+  await Hive.box("panera").put("Classic Grilled Cheese Sandwich", ['Wheat', 'Dairy', 'Egg', 'Vegan']);
+  await Hive.box("panera").put("Chipotle Chicken Avocado Melt", ['Wheat', 'Dairy', 'Egg', 'Vegetarian', 'Vegan']);
+
+
 
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
 /// HIVE STUFF
-Future<Box> getBox (String name) async{
+Future<Box> getBox(String name) async {
   bool exists = await Hive.boxExists(name);
   return exists ? Hive.box(name) : await Hive.openBox(name);
 
@@ -61,13 +87,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "App Demo",
-      // theme: ThemeData(
-      //     appBarTheme: AppBarTheme(
-              // backgroundColor: Colors.green[300],
-              // foregroundColor: Colors.white)),
-      home: UserListScreen());
+        debugShowCheckedModeBanner: false,
+        title: "App Demo",
+        // theme: ThemeData(
+        //     appBarTheme: AppBarTheme(
+        // backgroundColor: Colors.green[300],
+        // foregroundColor: Colors.white)),
+        home: UserListScreen());
   }
   // return UserListScreen();
 }
@@ -93,59 +119,59 @@ class _AppBodyState extends State<AppBody> {
   TextEditingController clr = TextEditingController();
   String text = "start";
   @override
-  void initState(){
+  void initState() {
     super.initState();
     // Hive.openBox("text");
   }
+
   @override
   Widget build(BuildContext context) {
     // print(Hive.box("text").values);
     // print(Hive.box("text").get("center_text"));
     return Scaffold(
-      appBar: AppBar(
-        leading: null,
-        title: const Align(
-            alignment: Alignment.centerLeft, child: Text("JSON Demo")),
-        actions: const [
-          IconButton(
-            onPressed: null,
-            icon: Icon(Icons.attach_money_sharp),
-            iconSize: 40.0,
-          ),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(32),
-              child: TextField(
-                controller: clr,
-                onChanged:(text) { 
-                  print("TEXT: $text");
-                  Hive.box("text").put("center_text", text);
-                  print("Box: ${Hive.box("text").get("center_text")}");
-                  setState(() {
-                    text = Hive.box("text").get("center_text");
-                  });
-                  print("TEXT VAR: $text");
-                },
-              ), 
+        appBar: AppBar(
+          leading: null,
+          title: const Align(
+              alignment: Alignment.centerLeft, child: Text("JSON Demo")),
+          actions: const [
+            IconButton(
+              onPressed: null,
+              icon: Icon(Icons.attach_money_sharp),
+              iconSize: 40.0,
             ),
-            Text(text),
-            // const Text("TEXT ON THE SCREEN")
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                    text = Hive.box("text").get("center_text");
-                });
-              }, 
-              child: const Text("Change Text"))
-            ],
+          ],
         ),
-        )
-    );
+        body: Center(
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(32),
+                child: TextField(
+                  controller: clr,
+                  onChanged: (text) {
+                    print("TEXT: $text");
+                    Hive.box("text").put("center_text", text);
+                    print("Box: ${Hive.box("text").get("center_text")}");
+                    setState(() {
+                      text = Hive.box("text").get("center_text");
+                    });
+                    print("TEXT VAR: $text");
+                  },
+                ),
+              ),
+              Text(text),
+              // const Text("TEXT ON THE SCREEN")
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      text = Hive.box("text").get("center_text");
+                    });
+                  },
+                  child: const Text("Change Text"))
+            ],
+          ),
+        ));
   }
 
   // Widget _userList() {

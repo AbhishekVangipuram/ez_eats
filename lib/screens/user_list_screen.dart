@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'add_user_screen.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 class UserListScreen extends StatefulWidget {
   UserListScreen({Key? key}) : super(key: key);
@@ -24,6 +26,7 @@ class _UserListScreenState extends State<UserListScreen> {
 
   // First initialization of _json (if there is no json in the file)
   List users_ = [];
+  FToast noUsersSelected = FToast();
   // Map<String, dynamic> _json = {};
   String _jsonString = "";
 
@@ -127,6 +130,7 @@ class _UserListScreenState extends State<UserListScreen> {
     // writeJson("bruh", ["Vegetarian"]);
     Hive.box("selected").putAll(responses);
     readJson();
+    noUsersSelected.init(context);
   }
 
   List userChecks = List.filled(20, false);
@@ -222,6 +226,7 @@ class _UserListScreenState extends State<UserListScreen> {
   }
 
   Widget searchButton(BuildContext context) {
+    int sCount = 0;
     return Material(
         elevation: 8,
         borderRadius: BorderRadius.circular(9),
@@ -235,13 +240,18 @@ class _UserListScreenState extends State<UserListScreen> {
                 bool sel = userChecks[i];
                 List rest = users_[i]['restrictions'];
                 if(sel) {
+                  sCount++;
                   for (var v = 0; v < rest.length; v++) {
                     Hive.box("selected").put(rest[v], true);
                   }
                 }
               }
+              if(sCount > 0) {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => SearchScreen()));
+              } else {
+                _showNoUserSelectedToast();
+              }
             },
             child: Container(
                 padding: const EdgeInsets.all(8),
@@ -403,5 +413,31 @@ class _UserListScreenState extends State<UserListScreen> {
             )
           ],
         ));
+  }
+
+  _showNoUserSelectedToast() {
+    Widget toast = Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+        decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.orangeAccent,
+        ),
+        child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+            Icon(Icons.error_outline),
+            SizedBox(
+            width: 12.0,
+            ),
+            Text("No Users Selected!"),
+        ],
+        ),
+    );
+
+    noUsersSelected.showToast(
+        child: toast,
+        gravity: ToastGravity.BOTTOM,
+        toastDuration: const Duration(seconds: 1, milliseconds: 500),
+    );
   }
 }
