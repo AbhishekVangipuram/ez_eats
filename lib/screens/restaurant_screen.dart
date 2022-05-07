@@ -85,7 +85,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
               IconButton(
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => UserListScreen())),
-                  icon: const Icon(Icons.home))
+                  icon: const Icon(Icons.home_outlined))
               // const IconButton(
               //     onPressed: null, icon: Icon(Icons.circle_outlined))
             ],

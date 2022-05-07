@@ -24,42 +24,41 @@ class _SearchScreenState extends State<SearchScreen> {
             body: SafeArea(
       child: Container(
           // padding: EdgeInsets.symmetric(horizontal: 0.05 * deviceWidth),
-          child: ListView(
+          child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                      // onPressed: () => Navigator.pop(context),
-                      onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => UserListScreen())),
-                      icon: const Icon(Icons.arrow_back_ios_new_sharp)),
-                  const SizedBox(width: 7),
-                  RichText(
-                    text: TextSpan(
-                      text: "Restaurants",
-                      style: TextStyle(
-                          color: Colors.black.withOpacity(0.6),
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30),
-                    ),
-                  )
-                ],
-              ),
-              // ListTile(title: Text("HELLO WORLD")),
-              // TextField(
-              //   controller: clr,
-              //   decoration: const InputDecoration(
-              //       icon: Icon(Icons.search), labelText: "Search"),
-              // ),
-              // const SizedBox(
-              //   height: 30,
-              // ),
-              restaurantList()
+              IconButton(
+                  // onPressed: () => Navigator.pop(context),
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => UserListScreen())),
+                  icon: const Icon(Icons.arrow_back_ios_new_sharp)),
+              const SizedBox(width: 7),
+              RichText(
+                text: TextSpan(
+                  text: "Restaurants",
+                  style: TextStyle(
+                      color: Colors.black.withOpacity(0.6),
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30),
+                ),
+              )
             ],
-          )),
+          ),
+          // ListTile(title: Text("HELLO WORLD")),
+          // TextField(
+          //   controller: clr,
+          //   decoration: const InputDecoration(
+          //       icon: Icon(Icons.search), labelText: "Search"),
+          // ),
+          // const SizedBox(
+          //   height: 30,
+          // ),
+          restaurantList()
+        ],
+      )),
     )));
   }
 
@@ -88,8 +87,11 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget restaurantCard(String name, String imgPathName) {
     bool alreadySaved = Hive.box("favorites").get(name);
-    return SizedBox(
-        width: 225,
+    double deviceWidth = MediaQuery.of(context).size.width;
+    return Container(
+        // width: 225,
+        padding: EdgeInsets.only(
+            left: 0.05 * deviceWidth, right: 0.05 * deviceWidth, bottom: 15),
         height: null,
         child: Card(
             child: InkWell(
@@ -98,9 +100,10 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: Column(children: [
                   Image.asset(
                       "assets/images/$imgPathName/$imgPathName-card.jpg",
-                      width: 225,
-                      height: 100,
-                      fit: BoxFit.fill),
+                      // width: 225,
+                      // height: 100,
+                      fit: BoxFit.contain),
+                  const Padding(padding: EdgeInsets.only(bottom: 15)),
                   Text(name,
                       style: const TextStyle(fontSize: 24, fontFamily: "")),
                   // Text("DESCRIPTION", style: const TextStyle(fontSize: 14, color: Colors.grey)),
@@ -127,13 +130,14 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget restaurantList() {
-    return SingleChildScrollView(
+    return Expanded(
+      child:SingleChildScrollView(
         child: Column(
       children: [
         restaurantCard("McDonald's", "mcdonalds"),
-        const SizedBox(height: 5),
+        // const SizedBox(height: 5),
         restaurantCard("Panera Bread", "panera")
       ],
-    ));
+    )));
   }
 }
