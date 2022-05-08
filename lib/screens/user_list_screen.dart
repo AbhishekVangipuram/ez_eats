@@ -11,7 +11,6 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
 class UserListScreen extends StatefulWidget {
   UserListScreen({Key? key}) : super(key: key);
 
@@ -22,7 +21,6 @@ class UserListScreen extends StatefulWidget {
 class _UserListScreenState extends State<UserListScreen> {
   bool _fileExists = false;
   File _filePath = File("");
-
 
   // First initialization of _json (if there is no json in the file)
   List users_ = [];
@@ -136,7 +134,7 @@ class _UserListScreenState extends State<UserListScreen> {
   List userChecks = List.filled(20, false);
 
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
     Hive.openBox("selected");
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
@@ -236,19 +234,19 @@ class _UserListScreenState extends State<UserListScreen> {
               Hive.box("selected").flush();
               Hive.box("selected").putAll(responses);
 
-              for (var i = 0; i < users_.length; i++){
+              for (var i = 0; i < users_.length; i++) {
                 bool sel = userChecks[i];
                 List rest = users_[i]['restrictions'];
-                if(sel) {
+                if (sel) {
                   sCount++;
                   for (var v = 0; v < rest.length; v++) {
                     Hive.box("selected").put(rest[v], true);
                   }
                 }
               }
-              if(sCount > 0) {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => SearchScreen()));
+              if (sCount > 0) {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => SearchScreen()));
               } else {
                 _showNoUserSelectedToast();
               }
@@ -381,9 +379,16 @@ class _UserListScreenState extends State<UserListScreen> {
               responses[key] = false;
             }
           }
-          writeJson(_name, restrictions);
-          controller.clear();
-          Navigator.pop(context);
+
+          if (_name.isEmpty) {
+            _showNoNameToast();
+          } else if (restrictions.length < 1) {
+            _showNoRestrictionsToast();
+          } else {
+            writeJson(_name, restrictions);
+            controller.clear();
+            Navigator.pop(context);
+          }
         },
         icon: const Icon(Icons.save_outlined, color: Colors.green),
         label: const Text("SAVE", style: TextStyle(color: Colors.green)));
@@ -417,27 +422,79 @@ class _UserListScreenState extends State<UserListScreen> {
 
   _showNoUserSelectedToast() {
     Widget toast = Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-        decoration: BoxDecoration(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25.0),
         color: Colors.orangeAccent,
-        ),
-        child: Row(
+      ),
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: const [
-            Icon(Icons.error_outline),
-            SizedBox(
+          Icon(Icons.error_outline),
+          SizedBox(
             width: 12.0,
-            ),
-            Text("No Users Selected!"),
+          ),
+          Text("No Users Selected!"),
         ],
-        ),
+      ),
     );
 
     noUsersSelected.showToast(
-        child: toast,
-        gravity: ToastGravity.BOTTOM,
-        toastDuration: const Duration(seconds: 1, milliseconds: 500),
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: const Duration(seconds: 1, milliseconds: 500),
+    );
+  }
+
+  _showNoNameToast() {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.orangeAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          Icon(Icons.error_outline),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text("Please Type a Name!"),
+        ],
+      ),
+    );
+
+    noUsersSelected.showToast(
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: const Duration(seconds: 1, milliseconds: 500),
+    );
+  }
+
+  _showNoRestrictionsToast() {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.orangeAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          Icon(Icons.error_outline),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text("Select at Least One Restriction!"),
+        ],
+      ),
+    );
+
+    noUsersSelected.showToast(
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: const Duration(seconds: 1, milliseconds: 500),
     );
   }
 }

@@ -76,7 +76,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   builder: (context) => RestaurantScreen(name: name)));
               action();
             },
-            child: Text("MORE",
+            child: Text("VIEW MENU",
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: Colors.orange[500])));
       },
