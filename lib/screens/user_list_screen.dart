@@ -11,6 +11,8 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+List userChecks = [];
+
 class UserListScreen extends StatefulWidget {
   UserListScreen({Key? key}) : super(key: key);
 
@@ -68,6 +70,7 @@ class _UserListScreenState extends State<UserListScreen> {
 
     //2. Update _json by adding _newJson<Map> -> _json<Map>
     users_.add(_newJson);
+    userChecks.add(false);
     // _json.addAll(_newJson);
     // print('2.(writeJson) _json(updated): $users_');
 
@@ -131,7 +134,6 @@ class _UserListScreenState extends State<UserListScreen> {
     noUsersSelected.init(context);
   }
 
-  List userChecks = List.filled(20, false);
 
   @override
   Widget build(BuildContext context) {
