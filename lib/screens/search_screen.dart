@@ -53,9 +53,9 @@ class _SearchScreenState extends State<SearchScreen> {
           //   decoration: const InputDecoration(
           //       icon: Icon(Icons.search), labelText: "Search"),
           // ),
-          // const SizedBox(
-          //   height: 30,
-          // ),
+          const SizedBox(
+            height: 20,
+          ),
           restaurantList()
         ],
       )),
@@ -64,21 +64,24 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget restaurantInfoButton(String name) {
     return OpenContainer(
-      transitionType: ContainerTransitionType.fade,
+      transitionType: ContainerTransitionType.fadeThrough,
       transitionDuration: const Duration(milliseconds: 500),
       closedElevation: 0.0,
       openElevation: 4.0,
       closedBuilder: (context, action) {
-        return TextButton(
-            onPressed: () {
-              // print('BUTTON PRESSED');
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => RestaurantScreen(name: name)));
-              action();
-            },
-            child: Text("VIEW MENU",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.orange[500])));
+        return IconButton(
+          onPressed: () {
+            // print('BUTTON PRESSED');
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => RestaurantScreen(name: name)));
+            action();
+          },
+          icon: const Icon(
+            Icons.menu_book_rounded,
+            size: 30,
+            color: Colors.orangeAccent,
+          ),
+        );
       },
       openBuilder: (context, action) => RestaurantScreen(name: name),
       tappable: false,
@@ -93,50 +96,83 @@ class _SearchScreenState extends State<SearchScreen> {
         padding: EdgeInsets.only(
             left: 0.05 * deviceWidth, right: 0.05 * deviceWidth, bottom: 15),
         height: null,
-        child: Card(
-            child: InkWell(
-                splashColor: Colors.blueGrey.withAlpha(50),
-                onTap: () {},
-                child: Column(children: [
+        child: Material(
+            elevation: 8,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   Image.asset(
                       "assets/images/$imgPathName/$imgPathName-card.jpg",
-                      // width: 225,
-                      // height: 100,
-                      fit: BoxFit.contain),
-                  const Padding(padding: EdgeInsets.only(bottom: 15)),
+                      width: 100,
+                      height: 90,
+                      fit: BoxFit.cover),
                   Text(name,
-                      style: const TextStyle(fontSize: 24, fontFamily: "")),
-                  // Text("DESCRIPTION", style: const TextStyle(fontSize: 14, color: Colors.grey)),
-                  ButtonBar(
-                    alignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      restaurantInfoButton(imgPathName),
-                      IconButton(
-                          onPressed: () {
-                            // print('ICON PRESSED');
-                            setState(() {
-                              Hive.box("favorites")
-                                  .put(name, !Hive.box("favorites").get(name));
-                            });
-                          },
-                          icon: Icon(
-                              alreadySaved
-                                  ? Icons.favorite
-                                  : Icons.favorite_border_sharp,
-                              color: alreadySaved ? Colors.red : null))
-                    ],
-                  )
-                ]))));
+                      style: const TextStyle(
+                          fontSize: 20,
+                          fontFamily: "Raleway",
+                          fontWeight: FontWeight.bold)),
+                  restaurantInfoButton(imgPathName),
+                ]))
+        // child: Card(
+        //     child: InkWell(
+        //         splashColor: Colors.blueGrey.withAlpha(50),
+        //         onTap: () {},
+        //         child: Column(children: [
+        //           Image.asset(
+        //               "assets/images/$imgPathName/$imgPathName-card.jpg",
+        //               // width: 225,
+        //               // height: 100,
+        //               fit: BoxFit.contain),
+        //           const Padding(padding: EdgeInsets.only(bottom: 15)),
+        //           Text(name,
+        //               style: const TextStyle(fontSize: 24, fontFamily: "")),
+        //           // Text("DESCRIPTION", style: const TextStyle(fontSize: 14, color: Colors.grey)),
+        //           ButtonBar(
+        //             alignment: MainAxisAlignment.spaceEvenly,
+        //             children: [
+        //               restaurantInfoButton(imgPathName),
+        //               IconButton(
+        //                   onPressed: () {
+        //                     // print('ICON PRESSED');
+        //                     setState(() {
+        //                       Hive.box("favorites")
+        //                           .put(name, !Hive.box("favorites").get(name));
+        //                     });
+        //                   },
+        //                   icon: Icon(
+        //                       alreadySaved
+        //                           ? Icons.favorite
+        //                           : Icons.favorite_border_sharp,
+        //                       color: alreadySaved ? Colors.red : null))
+        //             ],
+        //           )
+        //         ])))
+        );
   }
 
   Widget restaurantList() {
     return Expanded(
-      child:SingleChildScrollView(
-        child: Column(
+        child: SingleChildScrollView(
+            child: Column(
       children: [
         restaurantCard("McDonald's", "mcdonalds"),
         // const SizedBox(height: 5),
-        restaurantCard("Panera Bread", "panera")
+        restaurantCard("Panera Bread", "panera"),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+          RichText(
+            text: const TextSpan(
+              text: "More Restaurants Coming Soon...",
+              style: TextStyle(
+                  color: Colors.orangeAccent,
+                  fontFamily: "Raleway",
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20),
+            ),
+          )
+        ]),
       ],
     )));
   }

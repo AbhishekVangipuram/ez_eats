@@ -108,9 +108,6 @@ class _UserListScreenState extends State<UserListScreen> {
         //2. Update initialized _json by converting _jsonString<String>->_json<Map>
         setState(() {
           users_ = jsonDecode(_jsonString);
-          if (userChecks.isEmpty) {
-            userChecks = List.filled(users_.length, false, growable: true);
-          }
         });
         // print('2.(readJson) _json: $users_ \n - \n');
         // print(users_.length);
@@ -138,7 +135,11 @@ class _UserListScreenState extends State<UserListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    readJson();
     Hive.openBox("selected");
+    if (users_.length > userChecks.length || userChecks.isEmpty) {
+      userChecks = List.filled(users_.length, false, growable: true);
+    }
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -152,8 +153,6 @@ class _UserListScreenState extends State<UserListScreen> {
           _userTile(users_[i]['name'], users_[i]['restrictions'], i, context)
       ])),
     );
-
-    readJson();
 
     return Scaffold(
         body: SafeArea(
