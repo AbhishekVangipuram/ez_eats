@@ -11,8 +11,6 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-List userChecks = [];
-
 class UserListScreen extends StatefulWidget {
   UserListScreen({Key? key}) : super(key: key);
 
@@ -26,6 +24,7 @@ class _UserListScreenState extends State<UserListScreen> {
 
   // First initialization of _json (if there is no json in the file)
   List users_ = [];
+  List userChecks = [];
   FToast noUsersSelected = FToast();
   // Map<String, dynamic> _json = {};
   String _jsonString = "";
@@ -109,6 +108,9 @@ class _UserListScreenState extends State<UserListScreen> {
         //2. Update initialized _json by converting _jsonString<String>->_json<Map>
         setState(() {
           users_ = jsonDecode(_jsonString);
+          if (userChecks.isEmpty) {
+            userChecks = List.filled(users_.length, false, growable: true);
+          }
         });
         // print('2.(readJson) _json: $users_ \n - \n');
         // print(users_.length);
@@ -133,7 +135,6 @@ class _UserListScreenState extends State<UserListScreen> {
     readJson();
     noUsersSelected.init(context);
   }
-
 
   @override
   Widget build(BuildContext context) {
