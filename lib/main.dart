@@ -1,17 +1,84 @@
-// import 'package:english_words/english_words.dart';
-import 'dart:developer';
-
+// import 'dart:developer';
+import 'dart:convert';
+import 'package:ez_eats/screens/add_user_screen.dart';
+import 'package:ez_eats/screens/search_screen.dart';
+import 'package:ez_eats/screens/user_list_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
+// import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+// import 'package:sqflite/sqflite.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 
-// CollectionReference restaurants =
-//     FirebaseFirestore.instance.collection("restaurants");
+List _users = [];
 
 void main() async {
+  await Hive.initFlutter();
+  await Hive.openBox("text");
+  Hive.box("text").put("center_text", "");
+  await Hive.openBox("favorites");
+  await Hive.box("favorites").put("McDonald's", false);
+  await Hive.box('favorites').put("Panera Bread", false);
+  await Hive.openBox("selected");
+  await Hive.openBox("mcdonalds");
+  await Hive.box("mcdonalds").put(
+      "Big Mac", ['Wheat', 'Sesame', 'Dairy', 'Egg', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds")
+      .put("Cheeseburger", ['Wheat', 'Dairy', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds")
+      .put("Double Cheeseburger", ['Wheat', 'Dairy', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds").put("Quarter Pounder with Cheese",
+      ['Wheat', 'Sesame', 'Dairy', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds").put("Double Quarter Pounder with Cheese",
+      ['Wheat', 'Sesame', 'Dairy', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds")
+      .put("Hamburger", ['Wheat', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds")
+      .put("Double Cheeseburger", ['Wheat', 'Vegetarian', 'Dairy', 'Vegan']);
+  await Hive.box("mcdonalds")
+      .put("Chicken McNuggets", ['Wheat', 'Vegetarian', 'Vegan']);
+  await Hive.box("mcdonalds").put("Hash Brown", []);
+  await Hive.box("mcdonalds")
+      .put("Filet-o-Fish", ['Wheat', 'Dairy', 'Egg', 'Fish', 'Vegetarian', 'Vegan']);
+
+  await Hive.openBox("panera");
+  await Hive.box("panera").put("Asiago Bagel", ['Wheat', 'Dairy', 'Vegan']);
+  await Hive.box("panera").put("Everything Bagel", ['Wheat', 'Sesame', 'Vegan']);
+  await Hive.box("panera").put("Mixed Berry Greek Yogurt Parfait", ['Wheat', 'Tree Nut', 'Dairy', 'Vegan']);
+  await Hive.box("panera").put("Blueberry Muffin", ['Wheat', 'Dairy', 'Egg', 'Vegan']);
+  await Hive.box("panera").put("Bear Claw", ['Wheat', 'Tree Nut', 'Dairy', 'Soy', 'Egg', 'Vegan']);
+  await Hive.box("panera").put("Mediterranean Bowl", ['Wheat', 'Dairy', 'Vegan']);
+  await Hive.box("panera").put("Greek Salad", ['Dairy', 'Vegan']);
+  await Hive.box("panera").put("Broccoli Cheddar Soup", ['Wheat', 'Dairy', 'Vegetarian', 'Vegan']);
+  await Hive.box("panera").put("Mac & Cheese", ['Wheat', 'Dairy', 'Egg', 'Vegan']);
+  await Hive.box("panera").put("Classic Grilled Cheese Sandwich", ['Wheat', 'Dairy', 'Egg', 'Vegan']);
+  await Hive.box("panera").put("Chipotle Chicken Avocado Melt", ['Wheat', 'Dairy', 'Egg', 'Vegetarian', 'Vegan']);
+
+
+
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   runApp(const MyApp());
+}
+
+/// HIVE STUFF
+Future<Box> getBox(String name) async {
+  bool exists = await Hive.boxExists(name);
+  return exists ? Hive.box(name) : await Hive.openBox(name);
+
+  // could also do following
+  // return await Hive.openBox(name);
+}
+
+Future<int> writeToBox2(String name, var data) async {
+  var box = await getBox(name);
+  return await box.add(data);
+}
+
+void writeToBox(String name, String key, var value) async {
+  var box = await getBox(name);
+  box.put(key, value);
 }
 
 class MyApp extends StatelessWidget {
@@ -20,13 +87,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "Firebase Demo",
-        theme: ThemeData(
-            appBarTheme: AppBarTheme(
-                backgroundColor: Colors.blue[300],
-                foregroundColor: Colors.white)),
-        home: const AppBody());
+        debugShowCheckedModeBanner: false,
+        title: "App Demo",
+        // theme: ThemeData(
+        //     appBarTheme: AppBarTheme(
+        // backgroundColor: Colors.green[300],
+        // foregroundColor: Colors.white)),
+        home: UserListScreen());
   }
+  // return UserListScreen();
 }
 
 class AppBody extends StatefulWidget {
@@ -37,93 +106,132 @@ class AppBody extends StatefulWidget {
 }
 
 class _AppBodyState extends State<AppBody> {
-  // Define an async function to initialize FlutterFire
-  // void initializeFlutterFire() async {
-  //   // try {
-  //   //   // Wait for Firebase to initialize
-  //   //   await Firebase.initializeApp();
-  //   // } catch (e) {
-  //   //   log(e.toString());
-  //   // }
-  //   await Firebase.initializeApp();
-  // }
+  Future<void> readJson() async {
+    final String response = await rootBundle.loadString('data/users.json');
+    final data = await json.decode(response);
 
+    setState(() {
+      _users = data['users'];
+      // _text = "name: ${data['name']} value: ${data['value']}";
+    });
+  }
+
+  TextEditingController clr = TextEditingController();
+  String text = "start";
   @override
   void initState() {
-    // initializeFlutterFire();
-    Firebase.initializeApp();
     super.initState();
+    // Hive.openBox("text");
   }
 
   @override
   Widget build(BuildContext context) {
-    // final _textWidget = FutureBuilder<DocumentSnapshot>(
-    //     future: FirebaseFirestore.instance
-    //         .collection('restaurants')
-    //         .doc("McDonald's")
-    //         .get(),
-    //     builder: (context, snapshot) {
-    //       try {
-    //         if (snapshot.hasData) {
-    //           final data = snapshot.data!.data() as Map<String, dynamic>;
-    //           return Text("Snapshot Data: ${data['menu'][1].entries}");
-    //         } else if (snapshot.hasError) {
-    //           return Text("Snapshot Error: ${snapshot.error}");
-    //         } else {
-    //           return const Text("???");
-    //         }
-    //       } catch (e) {
-    //         return Text("Error: $e");
-    //       }
-    //     });
-
+    // print(Hive.box("text").values);
+    // print(Hive.box("text").get("center_text"));
     return Scaffold(
         appBar: AppBar(
-            title: const Align(
-                alignment: Alignment.centerLeft, child: Text("Firebase Demo"))),
-        body: Align(alignment: Alignment.center, child: _restaurantList()));
+          leading: null,
+          title: const Align(
+              alignment: Alignment.centerLeft, child: Text("JSON Demo")),
+          actions: const [
+            IconButton(
+              onPressed: null,
+              icon: Icon(Icons.attach_money_sharp),
+              iconSize: 40.0,
+            ),
+          ],
+        ),
+        body: Center(
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(32),
+                child: TextField(
+                  controller: clr,
+                  onChanged: (text) {
+                    print("TEXT: $text");
+                    Hive.box("text").put("center_text", text);
+                    print("Box: ${Hive.box("text").get("center_text")}");
+                    setState(() {
+                      text = Hive.box("text").get("center_text");
+                    });
+                    print("TEXT VAR: $text");
+                  },
+                ),
+              ),
+              Text(text),
+              // const Text("TEXT ON THE SCREEN")
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      text = Hive.box("text").get("center_text");
+                    });
+                  },
+                  child: const Text("Change Text"))
+            ],
+          ),
+        ));
   }
 
-  Widget _restaurantList() {
-    return FutureBuilder<QuerySnapshot>(
-        future: FirebaseFirestore.instance.collection('restaurants').get(),
-        builder: (context, snapshot) {
-          final names = snapshot.data!.docs.map((doc) => doc["name"]).toList();
-          final allData = snapshot.data!.docs.map((doc) => doc.data()).toList();
-          return ListView.builder(
-              shrinkWrap: false,
-              itemCount: 100,
-              itemBuilder: (context, i) {
-                try {
-                  return ListTile(
-                      title: Text(names[i],
-                          style: const TextStyle(fontSize: 24.0)));
-                  // onTap: () => Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => const MenuRoute())));
-                } catch (e) {
-                  // log(e.toString());
-                  return const SizedBox.shrink();
-                }
-              });
-        });
-  }
+  // Widget _userList() {
+  //   readJson();
+  //   return Scaffold(
+  //     body: Padding(
+  //       padding: const EdgeInsets.all(25),
+  //       child: Column(
+  //         children: [
+  //           // ElevatedButton(
+  //           //   child: const Text('Load Data'),
+  //           //   onPressed: readJson,
+  //           // ),
+
+  //           // Display the data loaded from sample.json
+  //           _users.isNotEmpty
+  //               ? Expanded(
+  //                   child: ListView.builder(
+  //                     itemCount: _users.length,
+  //                     itemBuilder: (context, index) {
+  //                       List _restrictions = _users[index]['restrictions'];
+  //                       var rString = '';
+  //                       for (var i = 0; i < _restrictions.length - 1; i++) {
+  //                         rString += _restrictions[i] + ", ";
+  //                       }
+  //                       if (_users.isNotEmpty) {
+  //                         rString += _restrictions[_restrictions.length - 1];
+  //                       }
+  //                       return Card(
+  //                         margin: const EdgeInsets.all(10),
+  //                         child: ListTile(
+  //                             leading: Text('User ' + (index + 1).toString()),
+  //                             title: Text(_users[index]['name']),
+  //                             subtitle: Text("Restrictions: " + rString),
+  //                             onTap: () => Navigator.push(
+  //                                 context,
+  //                                 MaterialPageRoute(
+  //                                     builder: (context) => UserRoute()))),
+  //                       );
+  //                     },
+  //                   ),
+  //                 )
+  //               : Container()
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
-// class MenuRoute extends StatelessWidget {
-//   const MenuRoute({Key? key}) : super(key: key);
-
+// class UserRoute extends StatelessWidget {
+//   const UserRoute({Key? key}) : super(key: key);
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//         appBar: AppBar(title: const Text("Menu")), body: _menuList());
-//   }
-
-//   Widget _menuList() {
-//     return FutureBuilder<>(builder: builder)
+//         appBar: AppBar(title: Text("User Data")),
+//         body: Center(child: Text("cuh")));
 //   }
 // }
+
 
 // class MyApp extends StatelessWidget {
 //   @override

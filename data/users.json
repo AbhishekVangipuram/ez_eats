@@ -1,8 +1,24 @@
 {
     "users": [
         {
-            "name": "",
-            "restrictions": []
+            "name": "Jimmy",
+            "restrictions": ["peanuts", "tree nuts"]
+        },
+        {
+            "name": "Abhishek",
+            "restrictions": ["vegetarian"]
+        },
+        {
+            "name": "John",
+            "restrictions": ["dairy", "soy"]
+        },
+        {
+            "name": "Mark",
+            "restrictions": ["peanuts"]
+        },
+        {
+            "name": "Bob",
+            "restrictions": ["tree nuts", "soy", "celery"]
         }
     ]
 }
